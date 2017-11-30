@@ -2,8 +2,8 @@ from time import time
 import numpy as np
 import pprint
 
-import matplotlib
-import matplotlib.pyplot as plt
+# import matplotlib
+# import matplotlib.pyplot as plt
 
 from sklearn import metrics
 from sklearn.cluster import KMeans
@@ -24,7 +24,7 @@ import matplotlib as mpl
 mpl.rcParams['figure.figsize'] = (20,10)
 
 from sklearn.metrics.pairwise import euclidean_distances
-from mpl_toolkits.mplot3d import Axes3D
+# from mpl_toolkits.mplot3d import Axes3D
 
 import re
 import requests  
