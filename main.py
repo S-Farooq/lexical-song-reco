@@ -30,6 +30,11 @@ import re
 import requests  
 from bs4 import BeautifulSoup
 import nltk, pprint
+
+try:
+    from nltk.tag.perceptron import PerceptronTagger
+except:
+    nltk.download('punkt')
 import cPickle
 from io import BytesIO  
 
@@ -320,7 +325,7 @@ def search_musix_track(search_term):
 
 
 def ie_preprocess(document):
-    from nltk.tag.perceptron import PerceptronTagger
+    
     tagger = PerceptronTagger() 
     tagged = []
     sentences = document.split("\n")
@@ -360,9 +365,15 @@ def tokenize_corpus(lyric_corpus_file, tokenized_corpus_file="tokenized_lyric_co
     return tokenized_lyric_corpus
 
 
+try:
+    from nltk.sentiment.vader import SentimentIntensityAnalyzer
+except:
+    nltk.download('vader_lexicon')
 
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from nltk import FreqDist
+try:
+    from nltk import FreqDist
+except:
+    nltk.download('popular')
 from collections import Counter
 import pandas as pd
 sid = SentimentIntensityAnalyzer()
@@ -500,12 +511,12 @@ from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/form')
 def my_form():
     return render_template('my-form.html')
 
 
-@app.route('/', methods=['POST'])
+@app.route('/form', methods=['POST'])
 def main():
     
     tlc ="tokenized_lyric_corpus.p"
