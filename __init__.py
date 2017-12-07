@@ -152,8 +152,7 @@ def get_euc_dist(set1,set2,set1_y,set2_y,n_top=10):
     ed_df_top['rel_conf'] = (1.0-ed_df_top['rel_conf'])*100
 
     ed_df_top = ed_df_top.rename(columns={'to': 'My_Songs', 'rel_conf': 'Relative_Confidence'})
-    msg = "<br>Closest (lexically) songs from my playlist to your selected song:<br>"
-    return ed_df_top[['My_Songs','distance']].sort_values(['distance'],ascending=True).to_html(index=False, header=False)
+    return ed_df_top[['My_Songs','distance']].sort_values(['distance'],ascending=True)
 
 def search_musix_track(search_term):
     p = re.compile('\/lyrics\/*')
@@ -357,9 +356,19 @@ def main():
     X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
     user_scaled_data= scaler.transform(user_data)
     
-    b = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=10)
+    reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=10)
+    reco_mrkup = ["""<table class="table table-hover"><thead><tr>
+        <th>{columns}</th></tr></thead><tbody>
+      """.format(columns="</th><th>".join(reco_df.columns))]
+    for index, row in df.iterrows():
+        reco_mrkup.append("""<tr>
+        <th>{vals}</th></tr>
+            """.format(vals="</th><th>".join(row)))
+
+    reco_mrkup.append("""</tbody></table>""")
+    reco_display = "\n".join(reco_mrkup)
     return render_template('index.html', song_name=user_song_name,
-        reco_df=Markup(str(b).encode(encoding='UTF-8',errors='ignore')),  display="block")
+        reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
