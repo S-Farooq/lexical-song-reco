@@ -106,20 +106,23 @@ def callback():
     profile_data = json.loads(profile_response.text)
 
     # Create Playlist
-    usong =session['usong']
-    playlist_info = {
-        "name": "Lex-Recos based on"+usong,
-        "description": "A playlist consisting of Shaham's songs that are lexically similar to {song}.".format(song=usong)
-    }
-    playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
-    post_request = requests.post(playlist_api_endpoint, data=playlist_info, headers=post_header)
-    print post_request.text
-    response_data = json.loads(post_request.text)
-    
-    #playlist vars
-    playlist_id = response_data['id']
-    playlist_url = response_data['external_urls']['spotify']
-
+    try:
+        usong =session['usong']
+        playlist_info = {
+            "name": "Lex-Recos based on"+usong,
+            "description": "A playlist consisting of Shaham's songs that are lexically similar to {song}.".format(song=usong)
+        }
+        playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
+        post_request = requests.post(playlist_api_endpoint, data=playlist_info, headers=post_header)
+        print post_request.text
+        response_data = json.loads(post_request.text)
+        
+        #playlist vars
+        playlist_id = response_data['id']
+        playlist_url = response_data['external_urls']['spotify']
+    except:
+        session['callback_playlist'] = response_data
+        return redirect(url_for('.my_form'))
     
     to_display_amount=5
     reco_df =pd.read_json(session['reco_df'], orient='split')
@@ -137,6 +140,8 @@ def callback():
                 print t['name'], t['artists'][0]['name']
                 uri_list.append(t['uri'])
         except:
+            session['callback_playlist'] = search_data
+            return redirect(url_for('.my_form'))
             continue        
 
     #ADD list of uris to playlist (add tracks)
