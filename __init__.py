@@ -137,9 +137,17 @@ def callback():
             track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,str(row['My Song']))
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
-            for t in search_data['tracks']['items'][:1]:
-                print t['name'], t['artists'][0]['name']
-                uri_list.append(t['uri'])
+
+            artist_choices=[]
+            for t in search_data['tracks']['items'][:]:
+                artist_choices.append(t['artists'][0]['name'].upper())
+            
+            closest_artist = difflib.get_close_matches(uartist, artist_choices,1)
+            closest_artist=closest_artist[0]
+            
+            for t in search_data['tracks']['items'][:]:
+                if t['artists'][0]['name'].upper()==closest_artist:
+                    uri_list.append(t['uri'])
         except:
             session['callback_playlist'] = search_data
             return redirect(url_for('.my_form'))
