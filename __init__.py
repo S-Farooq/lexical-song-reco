@@ -59,7 +59,7 @@ def get_mrkup_from_df(reco_df,to_display_amount=10):
         if to_display_amount==0:
             break
         to_display_amount = to_display_amount - 1
-        row = [str(x) for x in row]
+        row = [str(x).upper() for x in row]
         reco_mrkup.append("""<tr>
         <th>{vals}</th></tr>
             """.format(vals="</th><th>".join(row)))
