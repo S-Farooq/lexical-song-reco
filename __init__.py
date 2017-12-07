@@ -318,40 +318,10 @@ def get_song_data(tokenized_song):
     return x_data, x_names
 
 
-from flask import Flask, request, redirect, g, render_template, Markup, session, url_for, current_app
-
-class back(object):
-    """To be used in views.
-
-    Use `anchor` decorator to mark a view as a possible point of return.
-
-    `url()` is the last saved url.
-
-    Use `redirect` to return to the last return point visited.
-    """
-
-    cfg = current_app.config.get
-    cookie = cfg('REDIRECT_BACK_COOKIE', 'back')
-    default_view = cfg('REDIRECT_BACK_DEFAULT', 'index')
-
-    @staticmethod
-    def anchor(func, cookie=cookie):
-        @functools.wraps(func)
-        def result(*args, **kwargs):
-            session[cookie] = request.url
-            return func(*args, **kwargs)
-        return result
-
-    @staticmethod
-    def url(default=default_view, cookie=cookie):
-        return session.get(cookie, url_for(default))
-
-    @staticmethod
-    def redirect(default=default_view, cookie=cookie):
-        return redirect(back.url(default, cookie))
+from flask import Flask, request, redirect, g, render_template, Markup, session, url_for
 
 
-        
+
 
 import json
 import base64
@@ -362,7 +332,7 @@ import urllib
 
 
 app = Flask(__name__)
-back = back()
+app.secret_key = '5f535ebef7444444gb42d58590161e7bfcf653'
 #  Client Keys
 CLIENT_ID = "5f535ebef74b42d58590161e7bfcf653"
 CLIENT_SECRET = "b9f8b9f7c055433894bdcef35a2905f0"
@@ -459,9 +429,8 @@ def callback():
     # usong =session['usong']
     # uartist =session['uartist']
     # reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-    return back.redirect()
 
-    # return redirect(url_for('.my_form'))
+    return redirect(url_for('.my_form'))
     # return redirect(url_for('.main', 
     #         song_name=usong.upper(), artist_name=uartist.upper(),
     #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(display_arr, indent=4)),  display="block"))
@@ -474,9 +443,8 @@ def callback():
 
 
 @app.route('/')
-@back.anchor
 def my_form():
-    if session.get('callback_playlist') == True:
+    if 'callback_playlist' in session:
         reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
         uartist =session['uartist']
