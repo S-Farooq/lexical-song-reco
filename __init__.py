@@ -109,11 +109,11 @@ def callback():
     try:
         usong =session['usong']
         playlist_info = {
-            "name": "Lex-Recos playlist",
-            "description": "A playlist consisting of Shaham's songs that are lexically similar to yours."
+            "name": "Lex-Recos based on"+usong,
+            "description": "A playlist consisting of Shaham's songs that are lexically similar to {song}.".format(song=usong)
         }
         playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
-        post_request = requests.post(playlist_api_endpoint, data=playlist_info, headers=post_header)
+        post_request = requests.post(playlist_api_endpoint, data=json.dumps(playlist_info), headers=post_header)
         print post_request.text
         response_data = json.loads(post_request.text)
         
@@ -149,7 +149,7 @@ def callback():
     track_data = {
         "uris": uri_list,
     }
-    post_request = requests.post(add_track_api_endpoint, data=track_data, headers=post_header)
+    post_request = requests.post(add_track_api_endpoint, data=json.dumps(track_data), headers=post_header)
     response_data = json.loads(post_request.text)       
     
 
