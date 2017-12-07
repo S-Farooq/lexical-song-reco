@@ -483,7 +483,7 @@ def main():
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
-        except Exeption as e:
+        except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg)
 
