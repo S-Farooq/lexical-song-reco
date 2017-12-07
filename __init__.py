@@ -153,7 +153,7 @@ def get_euc_dist(set1,set2,set1_y,set2_y,n_top=10):
     ed_df_top = ed_df_top.sort_values(['distance'],ascending=True)
     ed_df_top['Rank'] = range(1,len(ed_df_top.index)+1)
     ed_df_top = ed_df_top.rename(columns={'distance': 'Distance', 'to': 'My Songs', 'rel_conf': 'Relative_Confidence'})
-    return ed_df_top[["Rank",'My_Songs','distance']]
+    return ed_df_top[["Rank",'My Songs','Distance']]
 
 def search_musix_track(search_term):
     p = re.compile('\/lyrics\/*')
