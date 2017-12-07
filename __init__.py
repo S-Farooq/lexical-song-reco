@@ -150,9 +150,10 @@ def get_euc_dist(set1,set2,set1_y,set2_y,n_top=10):
     ed_df_top['rel_conf'] = ed_df_top['distance']/ed_df_top['distance'].max()
     ed_df_top['rel_conf'] = ed_df_top['rel_conf']-ed_df_top['rel_conf'].min()
     ed_df_top['rel_conf'] = (1.0-ed_df_top['rel_conf'])*100
-
-    ed_df_top = ed_df_top.rename(columns={'to': 'My_Songs', 'rel_conf': 'Relative_Confidence'})
-    return ed_df_top[['My_Songs','distance']].sort_values(['distance'],ascending=True)
+    ed_df_top = ed_df_top.sort_values(['distance'],ascending=True)
+    ed_df_top['Rank'] = range(1,len(ed_df_top.index)+1)
+    ed_df_top = ed_df_top.rename(columns={'distance': 'Distance', 'to': 'My Songs', 'rel_conf': 'Relative_Confidence'})
+    return ed_df_top[["Rank",'My_Songs','distance']]
 
 def search_musix_track(search_term):
     p = re.compile('\/lyrics\/*')
@@ -356,11 +357,16 @@ def main():
     X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
     user_scaled_data= scaler.transform(user_data)
     
-    reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=10)
+    reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
     reco_mrkup = ["""<table class="table table-hover"><thead><tr>
         <th>{columns}</th></tr></thead><tbody>
       """.format(columns="</th><th>".join(reco_df.columns))]
+
+    to_display_amount=10
     for index, row in reco_df.iterrows():
+        if to_display_amount==0:
+            break
+        to_display_amount = to_display_amount - 1
         row = [str(x) for x in row]
         reco_mrkup.append("""<tr>
         <th>{vals}</th></tr>
@@ -368,7 +374,7 @@ def main():
 
     reco_mrkup.append("""</tbody></table>""")
     reco_display = "\n".join(reco_mrkup)
-    return render_template('index.html', song_name=user_song_name,
+    return render_template('index.html', song_name=request.form['song'].upper(), artist_name=request.form['artist'].upper(),
         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
 
 if __name__ == '__main__':
