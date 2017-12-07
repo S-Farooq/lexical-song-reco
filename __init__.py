@@ -335,7 +335,7 @@ def my_form():
     return render_template('index.html', reco_df='', display="none")
 
 
-@app.route('/#about', methods=['POST'])
+@app.route('/', methods=['POST'])
 def main():
     
     ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
@@ -375,7 +375,8 @@ def main():
 
     reco_mrkup.append("""</tbody></table>""")
     reco_display = "\n".join(reco_mrkup)
-    return render_template('index.html', song_name=request.form['song'].upper(), artist_name=request.form['artist'].upper(),
+    return render_template('index.html', scroll="recos", 
+        song_name=request.form['song'].upper(), artist_name=request.form['artist'].upper(),
         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
 
 if __name__ == '__main__':
