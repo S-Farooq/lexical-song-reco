@@ -461,7 +461,8 @@ if __name__ == '__main__':
         "oh wonder",'the shins','the killers','the strokes','bleachers',
         "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence and the machine", "dawud wharnsby",
         "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
-
+    
+    artists = ['julien baker']
     lyric_corpus = search_musix_corpus(artists,pages=7,corpus_file=lc)
-    tokenized_lyric_corpus = tokenize_corpus(lyric_corpus_file, tokenized_corpus_file=tlc)
-    all_data = get_corpus_dataframe(tokenized_lyric_file, output_file=ds)
+    tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
+    all_data = get_corpus_dataframe(tlc, output_file=ds)
