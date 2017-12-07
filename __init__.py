@@ -22,6 +22,8 @@ import re
 import requests  
 from bs4 import BeautifulSoup
 import nltk
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 nltk.data.path.append("/home/shahamfarooq/nltk_data/")
 nltk.data.path.append("/home/shahamfarooq/miniconda2/lib/nltk_data/")
@@ -317,7 +319,7 @@ def get_song_data(tokenized_song):
     return x_data, x_names
 
 
-from flask import Flask, request, redirect, g, render_template, Markup
+from flask import Flask, request, redirect, g, render_template, Markup, session
 
 app = Flask(__name__)
 
@@ -353,9 +355,9 @@ STATE = ""
 SHOW_DIALOG_bool = True
 SHOW_DIALOG_str = str(SHOW_DIALOG_bool).lower()
 
-reco_df = pd.DataFrame()
-usong = ""
-uartist=""
+session['reco_df'] = pd.DataFrame()
+session['usong'] = ""
+session['uartist'] = ""
 
 auth_query_parameters = {
     "response_type": "code",
@@ -426,13 +428,17 @@ def callback():
     
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
-    global reco_df
-    global usong
-    global uartist
+    reco_df =session['reco_df']
+    usong =session['usong']
+    uartist =session['uartist']
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-    return render_template('index.html',
+    return redirect(url_for('.my_form', 
             song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block"))
+    
+    # return redirect('index.html',
+    #         song_name=usong.upper(), artist_name=uartist.upper(),
+    #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     # return render_template("index.html", reco_df=display_arr)
 
 
@@ -447,11 +453,12 @@ def main():
     if request.form['btn'] == 'search':
         try:
             ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
-            global reco_df
-            global usong
-            global uartist
+            
             usong=request.form['song']
             uartist=request.form['artist']
+
+            session['usong']=usong
+            session['uartist']=uartist
             
             if usong=="" or uartist=="":
                 return render_template('index.html', display_alert="block", 
@@ -480,6 +487,7 @@ def main():
             user_scaled_data= scaler.transform(user_data)
             
             reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
+            session['reco_df']=reco_df
             
             
             reco_display = get_mrkup_from_df(reco_df)
@@ -494,9 +502,9 @@ def main():
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
     elif request.form['btn'] == 'more':
-        global reco_df
-        global usong
-        global uartist
+        reco_df =session['reco_df']
+        usong =session['usong']
+        uartist =session['uartist']
         reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
 
         return render_template('index.html',
