@@ -360,7 +360,7 @@ def main():
     reco_mrkup = ["""<table class="table table-hover"><thead><tr>
         <th>{columns}</th></tr></thead><tbody>
       """.format(columns="</th><th>".join(reco_df.columns))]
-    for index, row in df.iterrows():
+    for index, row in reco_df.iterrows():
         reco_mrkup.append("""<tr>
         <th>{vals}</th></tr>
             """.format(vals="</th><th>".join(row)))
