@@ -353,7 +353,9 @@ STATE = ""
 SHOW_DIALOG_bool = True
 SHOW_DIALOG_str = str(SHOW_DIALOG_bool).lower()
 
-
+reco_df = pd.DataFrame()
+usong = ""
+uartist=""
 
 auth_query_parameters = {
     "response_type": "code",
@@ -424,9 +426,9 @@ def callback():
     
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
-    reco_df = g.get('reco_df', None)
-    usong = g.get('usong', None)
-    uartist=g.get('uartist', None)
+    global reco_df
+    global usong
+    global uartist
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
     return render_template('index.html',
             song_name=usong.upper(), artist_name=uartist.upper(),
@@ -490,9 +492,9 @@ def main():
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
     elif request.form['btn'] == 'more':
-        reco_df = g.get('reco_df', None)
-        usong = g.get('usong', None)
-        uartist=g.get('uartist', None)
+        global reco_df
+        global usong
+        global uartist
         reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
 
         return render_template('index.html',
