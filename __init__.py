@@ -444,18 +444,21 @@ def callback():
 
 @app.route('/')
 def my_form():
-    if 'callback_playlist' in session:
+    if 'reco_df' in session:
         reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
         uartist =session['uartist']
-        reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-        to_display_dict = '<pre>' + pprint.pformat(session['callback_playlist']) + '</pre>'
-        # to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + to_display_dict) 
-        to_show_reco=Markup(to_display_dict) 
+        reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+        to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
 
-        return render_template('index.html', scroll="recos",
-            song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=to_show_reco,  display="block")
+        if 'callback_playlist' in session:
+            return render_template('index.html', scroll="recos",
+                song_name=usong.upper(), artist_name=uartist.upper(),
+                reco_df=to_show_reco,  display="block")
+        else:
+            return render_template('index.html', scroll="recos",
+                song_name=usong.upper(), artist_name=uartist.upper(),
+                reco_df=to_show_reco,  display="block")
     else:
         return render_template('index.html')
 
@@ -463,6 +466,8 @@ def my_form():
 def main():
     if request.form['btn'] == 'search':
         try:
+            for key in session.keys():
+                session.pop[key]
             ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
             
             usong=request.form['song']
