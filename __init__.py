@@ -125,7 +125,7 @@ def callback():
         session['callback_playlist'] = response_data
         return redirect(url_for('.my_form'))
     
-    to_display_amount=5
+    to_display_amount=25
     reco_df =pd.read_json(session['reco_df'], orient='split')
     uri_list=[]
     for index, row in reco_df.iterrows():
@@ -137,7 +137,7 @@ def callback():
             track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,str(row['My Song']))
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
-            for t in search_data['tracks']['items']:
+            for t in search_data['tracks']['items'][:1]:
                 print t['name'], t['artists'][0]['name']
                 uri_list.append(t['uri'])
         except:
@@ -161,7 +161,7 @@ def callback():
     
     # Combine profile and playlist data to display
     # display_arr = [profile_data] + playlist_data["items"]
-    session['callback_playlist'] = playlist_url
+    session['callback_playlist'] = "<a href='{playlist_url}' target='_blank'>Your New Lex-Recos Playlist</a>".format(playlist_url=playlist_url)
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
     # uartist =session['uartist']
