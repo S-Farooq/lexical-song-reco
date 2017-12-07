@@ -107,10 +107,11 @@ def callback():
 
     # Create Playlist
     try:
-        usong =session['usong']
+        usong =session['usong'].upper()
+        uartist =session['uartist'].upper()
         playlist_info = {
-            "name": "Lex-Recos based on"+usong,
-            "description": "A playlist consisting of Shaham's songs that are lexically similar to {song}.".format(song=usong)
+            "name": "Lex-Recos based on "+usong,
+            "description": "A playlist consisting of Shaham's songs that are lexically similar to {song} by {artist}.".format(song=usong,artist=uartist)
         }
         playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
         post_request = requests.post(playlist_api_endpoint, data=json.dumps(playlist_info), headers=post_header)
@@ -133,7 +134,7 @@ def callback():
         to_display_amount = to_display_amount - 1
         #search track
         try:
-            track_search_api_endpoint = "{}/search?q={}type=track".format(SPOTIFY_API_URL,str(row['My Song']))
+            track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,str(row['My Song']))
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
             for t in search_data['tracks']['items']:
