@@ -443,7 +443,18 @@ def callback():
 
 @app.route('/')
 def my_form():
-    return render_template('index.html')
+    if request.method == 'POST':
+        reco_df =pd.read_json(session['reco_df'], orient='split')
+        usong =session['usong']
+        uartist =session['uartist']
+        reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
+        to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(session['callback_playlist'], indent=4)) 
+
+        return render_template('index.html', scroll="recos",
+            song_name=usong.upper(), artist_name=uartist.upper(),
+            reco_df=to_show_reco,  display="block")
+    else:
+        return render_template('index.html')
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -509,17 +520,7 @@ def main():
             song_name=usong.upper(), artist_name=uartist.upper(),
             reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     else:
-        reco_df =pd.read_json(session['reco_df'], orient='split')
-        usong =session['usong']
-        uartist =session['uartist']
-        reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-        to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(session['callback_playlist'], indent=4)) 
-
-        return render_template('index.html', scroll="recos",
-            song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=to_show_reco,  display="block")
-    # else:
-    #     return render_template("index.html")
+        return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
