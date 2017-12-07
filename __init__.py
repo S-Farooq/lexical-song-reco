@@ -325,7 +325,7 @@ def get_song_data(tokenized_song):
     return x_data, x_names
 
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, Markup
 
 app = Flask(__name__)
 
@@ -358,7 +358,7 @@ def main():
     user_scaled_data= scaler.transform(user_data)
     
     b = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=10)
-    return render_template('index.html', reco_df=str(b).encode(encoding='UTF-8',errors='ignore') )
+    return render_template('index.html', reco_df=Markup(str(b).encode(encoding='UTF-8',errors='ignore') ))
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
