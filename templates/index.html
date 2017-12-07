@@ -30,6 +30,12 @@
       <div class="container text-center my-auto">
       <div class="row">
       	<div class="col-lg-12">
+      	{% if display_alert %}
+      	<div class="alert alert-danger alert-dismissable fade in" style="display:{{ display_alert }}">
+		    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		    <strong>Oops! Error:</strong> {{ err_msg }}
+	    </div>
+		{% endif %}
        <h2>A Natural Language Approach to connect you to my playlist.</h2>
       <p class="lead mb-5">Enter a song/artist that you're listening to and I will recommend you songs from my own playlist that lexically closest to yours!</p>
       	</div>
@@ -84,6 +90,7 @@
       <div class="overlay"></div>
     </header>
 
+    {% if display %}
     <!-- About -->
     <section class="content-section bg-light" id="recos" style="display:{{ display }}">
     {% if scroll %}
@@ -103,6 +110,11 @@
         <div class="row">
       	<div class="col-lg-12">
       	<form method="POST">
+      	<div class="form-row align-items-center">
+		    <div class="col-md-12">
+		    	<button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="more">Show More</button>
+	    	</div>
+    	</div>
 		  <div class="form-row align-items-center">
 		    <div class="col-md-8">
 		      <label class="sr-only" for="username">Username</label>
@@ -122,12 +134,14 @@
 		    <div class="col-md-4">
 		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="playlist">Create Spotify Playlist</button>
 		    </div>
+
 		  </div>
 		</form>
 		</div>
 		</div>
       </div>
     </section>
+    {% endif %}
 
    <!-- Footer -->
     <footer class="footer text-center">

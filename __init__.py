@@ -362,6 +362,9 @@ STATE = ""
 SHOW_DIALOG_bool = True
 SHOW_DIALOG_str = str(SHOW_DIALOG_bool).lower()
 
+reco_df = pd.DataFrame()
+usong=''
+uartist=''
 
 auth_query_parameters = {
     "response_type": "code",
@@ -372,6 +375,24 @@ auth_query_parameters = {
     "client_id": CLIENT_ID
 }
 
+def get_mrkup_from_df(reco_df,to_display_amount=10):
+    reco_mrkup = ["""<table class="table table-hover"><thead><tr>
+        <th>{columns}</th></tr></thead><tbody>
+      """.format(columns="</th><th>".join(reco_df.columns))]
+
+    for index, row in reco_df.iterrows():
+        if to_display_amount==0:
+            break
+        to_display_amount = to_display_amount - 1
+        row = [str(x) for x in row]
+        reco_mrkup.append("""<tr>
+        <th>{vals}</th></tr>
+            """.format(vals="</th><th>".join(row)))
+
+    reco_mrkup.append("""</tbody></table>""")
+    reco_display = "\n".join(reco_mrkup)
+    return reco_display
+    
 def auth_spot():
     # Auth Step 1: Authorization
     url_args = "&".join(["{}={}".format(key,urllib.quote(val)) for key,val in auth_query_parameters.iteritems()])
@@ -414,59 +435,72 @@ def callback():
     
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
-    return render_template("index.html", reco_df=display_arr)
+    reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
+    return render_template('index.html',
+            song_name=usong.upper(), artist_name=uartist.upper(),
+            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+    # return render_template("index.html", reco_df=display_arr)
+
 
 
 @app.route('/')
 def my_form():
-    return render_template('index.html', reco_df='', display="none")
+    return render_template('index.html')
 
 
 @app.route('/', methods=['POST'])
 def main():
     if request.form['btn'] == 'search':
-        ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
+        try:
+            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
+            usong=request.form['song']
+            uartist=request.form['artist']
+            if usong=="" or uartist=="":
+                return return render_template('index.html', display_alert="block", 
+                    err_msg="Please enter a song & artist to match against...")
 
-        user_song_name = request.form['song'] + " " + request.form['artist']
-        test_lyric = search_musix_track(user_song_name)
-        if test_lyric=="":
-            return "oops, seems like the song's lyrics could not be found, insert artists name or try another song."
+            user_song_name = usong + " " + uartist
+            
 
-        tokenized_song = tokenize_song(test_lyric)
-        user_data, x_names = get_song_data(tokenized_song)
+            test_lyric = search_musix_track(user_song_name)
+            if test_lyric=="":
+                return return render_template('index.html', display_alert="block", 
+                    err_msg="oops, seems like the song's lyrics could not be found, please try another song...or contact me :)")
 
-        all_data = pd.read_csv(ds)
+            tokenized_song = tokenize_song(test_lyric)
+            user_data, x_names = get_song_data(tokenized_song)
 
-        if len(user_data)==0:
-            return "oops, seems like the user tokenized song was not correct...error, contact me :)"
+            all_data = pd.read_csv(ds)
 
-        user_data = np.array(user_data)
-        user_data = user_data.reshape(1,-1)
-        X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
-        user_scaled_data= scaler.transform(user_data)
-        
-        reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
-        reco_mrkup = ["""<table class="table table-hover"><thead><tr>
-            <th>{columns}</th></tr></thead><tbody>
-          """.format(columns="</th><th>".join(reco_df.columns))]
+            if len(user_data)==0:
+                return return render_template('index.html', display_alert="block", 
+                    err_msg="oops, seems like the user tokenized song was not correct...error, contact me :)")
 
-        to_display_amount=10
-        for index, row in reco_df.iterrows():
-            if to_display_amount==0:
-                break
-            to_display_amount = to_display_amount - 1
-            row = [str(x) for x in row]
-            reco_mrkup.append("""<tr>
-            <th>{vals}</th></tr>
-                """.format(vals="</th><th>".join(row)))
+            user_data = np.array(user_data)
+            user_data = user_data.reshape(1,-1)
+            X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
+            user_scaled_data= scaler.transform(user_data)
+            
+            reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
+            
+            reco_display = get_mrkup_from_df(reco_df)
 
-        reco_mrkup.append("""</tbody></table>""")
-        reco_display = "\n".join(reco_mrkup)
-        return render_template('index.html', scroll="recos", 
-            song_name=request.form['song'].upper(), artist_name=request.form['artist'].upper(),
-            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+            return render_template('index.html', scroll="recos", 
+                song_name=usong.upper(), artist_name=uartist.upper(),
+                reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+        except:
+            if test_lyric=="":
+                return return render_template('index.html', display_alert="block", 
+                    err_msg="ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!")
+
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
+    elif request.form['btn'] == 'more':
+        reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+
+        return render_template('index.html',
+            song_name=usong.upper(), artist_name=uartist.upper(),
+            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     else:
         return render_template("index.html")
 
