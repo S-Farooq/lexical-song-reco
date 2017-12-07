@@ -447,10 +447,12 @@ def main():
     if request.form['btn'] == 'search':
         try:
             ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
-            g.usong=request.form['song']
-            g.uartist=request.form['artist']
-            usong = g.get('usong', None)
-            uartist=g.get('uartist', None)
+            global reco_df
+            global usong
+            global uartist
+            usong=request.form['song']
+            uartist=request.form['artist']
+            
             if usong=="" or uartist=="":
                 return render_template('index.html', display_alert="block", 
                     err_msg="Please enter a song & artist to match against...")
@@ -478,7 +480,7 @@ def main():
             user_scaled_data= scaler.transform(user_data)
             
             reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
-            g.reco_df=reco_df
+            
             
             reco_display = get_mrkup_from_df(reco_df)
 
