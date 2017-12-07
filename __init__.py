@@ -161,7 +161,7 @@ def callback():
     
     # Combine profile and playlist data to display
     # display_arr = [profile_data] + playlist_data["items"]
-    session['callback_playlist'] = "<a href='{playlist_url}' target='_blank'>Your New Lex-Recos Playlist</a>".format(playlist_url=playlist_url)
+    session['callback_playlist'] = Markup("<a href='{playlist_url}' target='_blank'>Your New Lex-Recos Playlist</a>".format(playlist_url=playlist_url))
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
     # uartist =session['uartist']
