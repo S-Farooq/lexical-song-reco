@@ -490,7 +490,7 @@ def main():
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
         except:
             if test_lyric=="":
-                return return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", 
                     err_msg="ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!")
 
     elif request.form['btn'] == 'playlist':
