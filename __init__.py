@@ -339,7 +339,7 @@ def main():
     
     ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
 
-    user_song_name = request.form['text']
+    user_song_name = request.form['song'] + " " + request.form['artist']
     test_lyric = search_musix_track(user_song_name)
     if test_lyric=="":
         return "oops, seems like the song's lyrics could not be found, insert artists name or try another song."
