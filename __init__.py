@@ -490,7 +490,7 @@ def main():
             tokenized_song = tokenize_song(test_lyric)
             user_data, x_names = get_song_data(tokenized_song)
 
-            all_data = pd.read_csv(ds)
+            all_data = pd.read_csv(ds, encoding="utf-8")
 
             if len(user_data)==0 or user_data[0]==0.0:
                 return render_template('index.html', display_alert="block", 
