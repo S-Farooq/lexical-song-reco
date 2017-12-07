@@ -466,8 +466,7 @@ def my_form():
 def main():
     if request.form['btn'] == 'search':
         try:
-            for key in session.keys():
-                session.pop[key]
+            session.clear()
             ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
             
             usong=request.form['song']
