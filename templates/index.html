@@ -24,77 +24,35 @@
   </head>
 
   <body id="page-top">
-
-  <section class="callout">
-      <div class="container text-center">
-        
-        	<h2>A Natural Language Approach to connect you to my playlist.</h2>
-	      <p class="lead mb-5">Enter a song/artist that you're listening to and I will recommend you songs from my own playlist that lexically closest to yours!</p>
-      </div>
-      <div class="container text-center">
-        <div class="row">
-          <div class="col-lg-10 mx-auto text-center">
-          
-	      <form method="POST">
-			  <div class="form-row align-items-center">
-			    <div class="col-auto">
-			      <label class="sr-only" for="song">Artist</label>
-			      <div class="input-group mb-2 mb-sm-0">
-			        <div class="input-group-addon">Song</div>
-			      <input name="song" type="text" class="form-control mb-2 mb-sm-0" id="song" placeholder="How to Save a Life">
-			    </div>
-			    <div class="col-auto">
-			      <label class="sr-only" for="artist">Artist</label>
-			      <div class="input-group mb-2 mb-sm-0">
-			        <div class="input-group-addon">Artist</div>
-			        <input name="artist" type="text" class="form-control" id="artist" placeholder="The Fray">
-			      </div>
-			    </div>
-			    <div class="col-auto">
-			      <button type="submit" class="btn btn-primary btn-xl js-scroll-trigger">Submit</button>
-			    </div>
-			  </div>
-			</form>
-		
-          </div>
-        </div>
-      </div>
-    </section>
     
     <!-- Header -->
-    <!--
     <header class="masthead d-flex">
       <div class="container text-center my-auto">
-	       <h2>A Natural Language Approach to connect you to my playlist.</h2>
-	      <p class="lead mb-5">Enter a song/artist that you're listening to and I will recommend you songs from my own playlist that lexically closest to yours!</p>
-      </div>
-      <div class="container text-center">
-        <div class="row">
-          <div class="col-lg-10 mx-auto text-center">
-          
-	      <form method="POST">
-			  <div class="form-row align-items-center">
-			    <div class="col-auto">
-			      <label class="sr-only" for="inlineFormInput">Song</label>
-			      <input name="song" type="text" class="form-control mb-2 mb-sm-0" id="song" placeholder="How to Save a Life">
-			    </div>
-			    <div class="col-auto">
-			      <label class="sr-only" for="artist">Artist</label>
-			      <div class="input-group mb-2 mb-sm-0">
-			        <div class="input-group-addon">Artist</div>
-			        <input name="artist" type="text" class="form-control" id="artist" placeholder="The Fray">
-			      </div>
-			    </div>
-			    <div class="col-auto">
-			      <button type="submit" class="btn btn-primary btn-xl js-scroll-trigger">Submit</button>
-			    </div>
-			  </div>
-			</form>
-		
-          </div>
-        </div>
-      </div>
-
+      
+       <h2>A Natural Language Approach to connect you to my playlist.</h2>
+      <p class="lead mb-5">Enter a song/artist that you're listening to and I will recommend you songs from my own playlist that lexically closest to yours!</p>
+      
+      <form method="POST">
+		  <div class="form-row align-items-center">
+		    <div class="col-auto">
+		      <label class="sr-only" for="song">Song</label>
+		      <div class="input-group mb-2 mb-sm-0">
+		        <div class="input-group-addon">Song</div>
+		      <input name="song" type="text" class="form-control mb-2 mb-sm-0" id="song" placeholder="How to Save a Life">
+		    </div>
+		    <div class="col-auto">
+		      <label class="sr-only" for="artist">Artist</label>
+		      <div class="input-group mb-2 mb-sm-0">
+		        <div class="input-group-addon">Artist</div>
+		        <input name="artist" type="text" class="form-control" id="artist" placeholder="The Fray">
+		      </div>
+		    </div>
+		    <div class="col-auto">
+		      <button type="submit" class="btn btn-primary btn-xl js-scroll-trigger">Submit</button>
+		    </div>
+		  </div>
+		</form>
+<!--
         <form method="POST">
         <div class="row">
         	<div class="col-lg-6">
@@ -114,10 +72,10 @@
 		  <button type="submit" class="btn btn-primary btn-xl js-scroll-trigger">Submit</button>
 		  </div>
 		</form>
-        
+        -->
       </div>
       <div class="overlay"></div>
-    </header>-->
+    </header>
 
     <!-- About -->
     <section class="content-section bg-light" id="about" style="display:{{ display }}">
