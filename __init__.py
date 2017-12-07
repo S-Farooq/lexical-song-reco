@@ -475,7 +475,7 @@ def main():
 
             all_data = pd.read_csv(ds)
 
-            if len(user_data)==0 or user_data[0]=0:
+            if len(user_data)==0 or user_data[0]==0.0:
                 return render_template('index.html', display_alert="block", 
                     err_msg="oops, seems like the song could not be analyzed correctly...error, contact me :)")
 
