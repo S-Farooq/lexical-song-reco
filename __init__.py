@@ -31,6 +31,9 @@ from nltk.tag.perceptron import PerceptronTagger
 
 import cPickle
 from io import BytesIO  
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 np.random.seed(42)
 
