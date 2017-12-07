@@ -164,12 +164,7 @@ def search_musix_track(search_term):
     useragent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.75 Safari/537.36'
 
     searchlink = url + search_term + "/tracks"
-    try:
-        r  = requests.get(searchlink, headers={'User-Agent': useragent})
-    except Exception as e:
-        print "No track found...something went wrong.."
-    	print str(e)
-    	return ""
+    r  = requests.get(searchlink, headers={'User-Agent': useragent})
     
     soup = BeautifulSoup(r.content, "lxml")
     gdata = soup.find_all('a',{'class':'title'})
@@ -182,11 +177,7 @@ def search_musix_track(search_term):
         song_lyrics = []
         song_page = webpage+slink
         print song_page
-        try:
-            r  = requests.get(song_page, headers={'User-Agent': useragent})
-        except:
-            print "cant access lyric page for {song_page},.".format(song_page=song_page)
-            return ""
+        r  = requests.get(song_page, headers={'User-Agent': useragent})
         soup = BeautifulSoup(r.content, "lxml")
         song_name = soup.find_all('h1',{'class':'mxm-track-title__track'})
         song_name = song_name[0].text
@@ -464,11 +455,11 @@ def main():
 
             user_song_name = usong + " " + uartist
             
-
-            test_lyric = search_musix_track(user_song_name)
-            if test_lyric=="":
-                return render_template('index.html', display_alert="block", 
-                    err_msg="oops, seems like the song's lyrics could not be found, please try another song...or contact me :)")
+            try:
+                test_lyric = search_musix_track(user_song_name)
+            except Exeption as e:
+                err_msg = str(e) + ".oops, seems like the song's lyrics could not be found, please try another song...or contact me :)"
+                return render_template('index.html', display_alert="block", err_msg=err_msg)
 
             tokenized_song = tokenize_song(test_lyric)
             user_data, x_names = get_song_data(tokenized_song)
@@ -492,10 +483,9 @@ def main():
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
-        except:
-            if test_lyric=="":
-                return render_template('index.html', display_alert="block", 
-                    err_msg="ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!")
+        except Exeption as e:
+            err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
+            return render_template('index.html', display_alert="block", err_msg=err_msg)
 
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
