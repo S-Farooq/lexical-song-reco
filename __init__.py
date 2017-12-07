@@ -318,8 +318,39 @@ def get_song_data(tokenized_song):
     return x_data, x_names
 
 
-from flask import Flask, request, redirect, g, render_template, Markup, session, url_for
+from flask import Flask, request, redirect, g, render_template, Markup, session, url_for, current_app
 
+class back(object):
+    """To be used in views.
+
+    Use `anchor` decorator to mark a view as a possible point of return.
+
+    `url()` is the last saved url.
+
+    Use `redirect` to return to the last return point visited.
+    """
+
+    cfg = current_app.config.get
+    cookie = cfg('REDIRECT_BACK_COOKIE', 'back')
+    default_view = cfg('REDIRECT_BACK_DEFAULT', 'index')
+
+    @staticmethod
+    def anchor(func, cookie=cookie):
+        @functools.wraps(func)
+        def result(*args, **kwargs):
+            session[cookie] = request.url
+            return func(*args, **kwargs)
+        return result
+
+    @staticmethod
+    def url(default=default_view, cookie=cookie):
+        return session.get(cookie, url_for(default))
+
+    @staticmethod
+    def redirect(default=default_view, cookie=cookie):
+        return redirect(back.url(default, cookie))
+
+back = back()
 app = Flask(__name__)
 
 
@@ -429,7 +460,9 @@ def callback():
     # usong =session['usong']
     # uartist =session['uartist']
     # reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-    return redirect(url_for('.my_form'))
+    return back.redirect()
+    
+    # return redirect(url_for('.my_form'))
     # return redirect(url_for('.main', 
     #         song_name=usong.upper(), artist_name=uartist.upper(),
     #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(display_arr, indent=4)),  display="block"))
@@ -442,6 +475,7 @@ def callback():
 
 
 @app.route('/')
+@back.anchor
 def my_form():
     if session.get('callback_playlist') == True:
         reco_df =pd.read_json(session['reco_df'], orient='split')
@@ -457,6 +491,7 @@ def my_form():
         return render_template('index.html')
 
 @app.route('/', methods=['POST', 'GET'])
+return back.redirect()
 def main():
     if request.form['btn'] == 'search':
         try:
@@ -518,6 +553,16 @@ def main():
         return render_template('index.html',
             song_name=usong.upper(), artist_name=uartist.upper(),
             reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+    elif session.get('callback_playlist') == True:
+        reco_df =pd.read_json(session['reco_df'], orient='split')
+        usong =session['usong']
+        uartist =session['uartist']
+        reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
+        to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(session['callback_playlist'], indent=4)) 
+
+        return render_template('index.html', scroll="recos",
+            song_name=usong.upper(), artist_name=uartist.upper(),
+            reco_df=to_show_reco,  display="block")
     else:
         return render_template("index.html")
 
