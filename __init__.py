@@ -355,9 +355,6 @@ STATE = ""
 SHOW_DIALOG_bool = True
 SHOW_DIALOG_str = str(SHOW_DIALOG_bool).lower()
 
-session['reco_df'] = pd.DataFrame()
-session['usong'] = ""
-session['uartist'] = ""
 
 auth_query_parameters = {
     "response_type": "code",
@@ -435,7 +432,7 @@ def callback():
     return redirect(url_for('.my_form', 
             song_name=usong.upper(), artist_name=uartist.upper(),
             reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block"))
-    
+
     # return redirect('index.html',
     #         song_name=usong.upper(), artist_name=uartist.upper(),
     #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
