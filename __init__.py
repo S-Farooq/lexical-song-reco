@@ -354,9 +354,9 @@ SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 
 
 # Server-side Parameters
-CLIENT_SIDE_URL = "http://127.0.0.1"
+CLIENT_SIDE_URL = "http://songreco.shaham.me"
 PORT = 8080
-REDIRECT_URI = "{}:{}/callback/q".format(CLIENT_SIDE_URL, PORT)
+REDIRECT_URI = "{}/callback/q".format(CLIENT_SIDE_URL)
 SCOPE = "playlist-modify-public playlist-modify-private"
 STATE = ""
 SHOW_DIALOG_bool = True
@@ -372,7 +372,6 @@ auth_query_parameters = {
     "client_id": CLIENT_ID
 }
 
-@app.route("/spotify")
 def auth_spot():
     # Auth Step 1: Authorization
     url_args = "&".join(["{}={}".format(key,urllib.quote(val)) for key,val in auth_query_parameters.iteritems()])
@@ -467,8 +466,8 @@ def main():
             song_name=request.form['song'].upper(), artist_name=request.form['artist'].upper(),
             reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     elif request.form['btn'] == 'playlist':
-        return "Making playlist.."
-    
+        auth_spot()
+        
 if __name__ == '__main__':
     app.run(debug=True, port=80)
     main()
