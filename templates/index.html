@@ -29,17 +29,15 @@
     <header class="masthead d-flex">
       <div class="container text-center my-auto">
         <!-- <h1 class="mb-1">Lexical Song Recommendation</h1> -->
-        <h3 class="mb-5">
-          <em>A Natural Language Approach to connect you to my playlist.</em><br>
-          <em>Enter a song/artist that you're listening to and I will recommend you songs from my own playlist that lexically closest to yours!</em>
-        </h3>
+      <h2>A Natural Language Approach to connect you to my playlist.</h2>
+      <p class="lead mb-5">Enter a song/artist that you're listening to and I will recommend you songs from my own playlist that lexically closest to yours!</p>
         <form method="POST">
 		  <div class="form-group">
-		    <label for="email">Song Name:</label>
+		    <label for="email"><h2 class="mb-4">Your Song:</h2></label>
 		    <input name="song" type="song" class="form-control" id="song">
 		  </div>
 		  <div class="form-group">
-		    <label for="artist">Artist:</label>
+		    <label for="artist"><h2 class="mb-4">The Artist:</h2></label>
 		    <input name='artist' type="artist" class="form-control" id="artist">
 		  </div>
 		  <button type="submit" class="btn btn-primary btn-xl js-scroll-trigger">Submit</button>
@@ -49,7 +47,12 @@
       <div class="overlay"></div>
     </header>
 
-    
+    <!-- Call to Action -->
+    <section class="content-section bg-primary text-white">
+      <div class="container text-center">
+        {{ reco_df }}
+      </div>
+    </section>
 
     <!-- Bootstrap core JavaScript -->
     <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>

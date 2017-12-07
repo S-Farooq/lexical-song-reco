@@ -331,7 +331,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def my_form():
-    return render_template('index.html')
+    return render_template('index.html', reco_df='')
 
 
 @app.route('/', methods=['POST'])
@@ -357,8 +357,8 @@ def main():
     X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
     user_scaled_data= scaler.transform(user_data)
     
-    b = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=5)
-    return str(b).encode(encoding='UTF-8',errors='ignore') 
+    b = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=10)
+    return render_template('index.html', reco_df=str(b).encode(encoding='UTF-8',errors='ignore') )
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
