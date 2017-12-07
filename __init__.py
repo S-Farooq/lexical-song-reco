@@ -108,11 +108,12 @@ def callback():
     # Create Playlist
     usong =session['usong']
     playlist_info = {
-        "name": "Lex-Recos based on "+usong,
+        "name": "Lex-Recos based on"+usong,
         "description": "A playlist consisting of Shaham's songs that are lexically similar to {song}.".format(song=usong)
     }
     playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
     post_request = requests.post(playlist_api_endpoint, data=playlist_info, headers=post_header)
+    print post_request.text
     response_data = json.loads(post_request.text)
     
     #playlist vars
