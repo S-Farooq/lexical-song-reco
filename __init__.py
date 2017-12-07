@@ -457,7 +457,7 @@ def main():
             
             try:
                 test_lyric = search_musix_track(user_song_name)
-            except Exeption as e:
+            except Exception as e:
                 err_msg = str(e) + ".oops, seems like the song's lyrics could not be found, please try another song...or contact me :)"
                 return render_template('index.html', display_alert="block", err_msg=err_msg)
 
