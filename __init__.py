@@ -466,7 +466,9 @@ def main():
             song_name=request.form['song'].upper(), artist_name=request.form['artist'].upper(),
             reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     elif request.form['btn'] == 'playlist':
-        redirect(auth_spot())
+        return redirect(auth_spot())
+    else:
+        return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
