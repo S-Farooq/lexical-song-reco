@@ -182,13 +182,13 @@ def search_musix_track(search_term):
         song_name = soup.find_all('h1',{'class':'mxm-track-title__track'})
         song_name = song_name[0].text
         song_name = song_name[6:]
-        print song_name
         
         lyrics = soup.find_all('p',{'class':'mxm-lyrics__content'})
         if len(lyrics)==0:
-            print "No lyrics found for {song}".format(song=song_page)
+            raise Exception("No lyrics found for {song}".format(song=song_page))
+
         for l in lyrics:
-            song_lyrics.append(l.text)
+            song_lyrics.append(l.text.encode('utf8'))
 
         song_lyrics  = "\n".join(song_lyrics)
         song_lyrics = song_lyrics.replace("\n\n","\n")
