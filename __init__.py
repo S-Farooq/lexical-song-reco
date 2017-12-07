@@ -319,7 +319,7 @@ def get_song_data(tokenized_song):
     return x_data, x_names
 
 
-from flask import Flask, request, redirect, g, render_template, Markup, session
+from flask import Flask, request, redirect, g, render_template, Markup, session, url_for
 
 app = Flask(__name__)
 
@@ -431,7 +431,7 @@ def callback():
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
     return redirect(url_for('.my_form', 
             song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block"))
+            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pp.pprint(display_arr)),  display="block"))
 
     # return redirect('index.html',
     #         song_name=usong.upper(), artist_name=uartist.upper(),
