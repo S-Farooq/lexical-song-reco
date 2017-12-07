@@ -23,7 +23,6 @@ import requests
 from bs4 import BeautifulSoup
 import nltk
 import pprint
-pp = pprint.PrettyPrinter(indent=4)
 
 nltk.data.path.append("/home/shahamfarooq/nltk_data/")
 nltk.data.path.append("/home/shahamfarooq/miniconda2/lib/nltk_data/")
@@ -431,7 +430,7 @@ def callback():
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
     return redirect(url_for('.my_form', 
             song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pp.pprint(display_arr)),  display="block"))
+            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(display_arr, indent=4)),  display="block"))
 
     # return redirect('index.html',
     #         song_name=usong.upper(), artist_name=uartist.upper(),
