@@ -362,9 +362,7 @@ STATE = ""
 SHOW_DIALOG_bool = True
 SHOW_DIALOG_str = str(SHOW_DIALOG_bool).lower()
 
-reco_df = pd.DataFrame()
-usong=''
-uartist=''
+
 
 auth_query_parameters = {
     "response_type": "code",
@@ -435,6 +433,9 @@ def callback():
     
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
+    reco_df = g.get('reco_df', None)
+    usong = g.get('usong', None)
+    uartist=g.get('uartist', None)
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
     return render_template('index.html',
             song_name=usong.upper(), artist_name=uartist.upper(),
@@ -453,8 +454,10 @@ def main():
     if request.form['btn'] == 'search':
         try:
             ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
-            usong=request.form['song']
-            uartist=request.form['artist']
+            g.usong=request.form['song']
+            g.uartist=request.form['artist']
+            usong = g.get('usong', None)
+            uartist=g.get('uartist', None)
             if usong=="" or uartist=="":
                 return render_template('index.html', display_alert="block", 
                     err_msg="Please enter a song & artist to match against...")
@@ -472,9 +475,9 @@ def main():
 
             all_data = pd.read_csv(ds)
 
-            if len(user_data)==0:
+            if len(user_data)==0 or user_data[0]=0:
                 return render_template('index.html', display_alert="block", 
-                    err_msg="oops, seems like the user tokenized song was not correct...error, contact me :)")
+                    err_msg="oops, seems like the song could not be analyzed correctly...error, contact me :)")
 
             user_data = np.array(user_data)
             user_data = user_data.reshape(1,-1)
@@ -482,6 +485,7 @@ def main():
             user_scaled_data= scaler.transform(user_data)
             
             reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
+            g.reco_df=reco_df
             
             reco_display = get_mrkup_from_df(reco_df)
 
@@ -496,6 +500,9 @@ def main():
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
     elif request.form['btn'] == 'more':
+        reco_df = g.get('reco_df', None)
+        usong = g.get('usong', None)
+        uartist=g.get('uartist', None)
         reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
 
         return render_template('index.html',
