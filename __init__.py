@@ -152,7 +152,7 @@ def callback():
                 if t['artists'][0]['name'].upper()==closest_artist:
                     uri_list.append(t['uri'])
                     entered=True
-            session['callback_playlist'] = str(closest_artist)+str(artist_choices)
+            session['callback_playlist'] = str(uartist)+str(artist_choices)
             return redirect(url_for('.my_form'))   
             if not entered:
                 uri_list.append(search_data['tracks']['items'][0]['uri'])
