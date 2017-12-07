@@ -392,7 +392,7 @@ def get_mrkup_from_df(reco_df,to_display_amount=10):
     reco_mrkup.append("""</tbody></table>""")
     reco_display = "\n".join(reco_mrkup)
     return reco_display
-    
+
 def auth_spot():
     # Auth Step 1: Authorization
     url_args = "&".join(["{}={}".format(key,urllib.quote(val)) for key,val in auth_query_parameters.iteritems()])
@@ -456,7 +456,7 @@ def main():
             usong=request.form['song']
             uartist=request.form['artist']
             if usong=="" or uartist=="":
-                return return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", 
                     err_msg="Please enter a song & artist to match against...")
 
             user_song_name = usong + " " + uartist
@@ -464,7 +464,7 @@ def main():
 
             test_lyric = search_musix_track(user_song_name)
             if test_lyric=="":
-                return return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", 
                     err_msg="oops, seems like the song's lyrics could not be found, please try another song...or contact me :)")
 
             tokenized_song = tokenize_song(test_lyric)
@@ -473,7 +473,7 @@ def main():
             all_data = pd.read_csv(ds)
 
             if len(user_data)==0:
-                return return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", 
                     err_msg="oops, seems like the user tokenized song was not correct...error, contact me :)")
 
             user_data = np.array(user_data)
