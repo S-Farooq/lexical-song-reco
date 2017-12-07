@@ -98,6 +98,8 @@ def callback():
     # Auth Step 6: Use the access token to access Spotify API
     authorization_header = {"Authorization":"Bearer {}".format(access_token)}
 
+    post_header = {"Authorization":"Bearer {}".format(access_token), "Content-Type": "application/json"}
+
     # Get profile data
     user_profile_api_endpoint = "{}/me".format(SPOTIFY_API_URL)
     profile_response = requests.get(user_profile_api_endpoint, headers=authorization_header)
@@ -110,7 +112,7 @@ def callback():
         "description": "A playlist consisting of Shaham's songs that are lexically similar to {song}.".format(song=usong)
     }
     playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
-    post_request = requests.post(playlist_api_endpoint, data=playlist_info, headers=authorization_header)
+    post_request = requests.post(playlist_api_endpoint, data=playlist_info, headers=post_header)
     response_data = json.loads(post_request.text)
     
     #playlist vars
@@ -141,7 +143,7 @@ def callback():
     track_data = {
         "uris": uri_list,
     }
-    post_request = requests.post(add_track_api_endpoint, data=track_data, headers=authorization_header)
+    post_request = requests.post(add_track_api_endpoint, data=track_data, headers=post_header)
     response_data = json.loads(post_request.text)       
     
 
