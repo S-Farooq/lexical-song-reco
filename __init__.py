@@ -103,14 +103,56 @@ def callback():
     profile_response = requests.get(user_profile_api_endpoint, headers=authorization_header)
     profile_data = json.loads(profile_response.text)
 
-    # Get user playlist data
+    # Create Playlist
+    usong =session['usong']
+    playlist_info = {
+        "name": "Lex-Recos based on "+usong,
+        "description": "A playlist consisting of Shaham's songs that are lexically similar to {song}.".format(song=usong)
+    }
     playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
-    playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
-    playlist_data = json.loads(playlists_response.text)
+    post_request = requests.post(playlist_api_endpoint, data=playlist_info, headers=authorization_header)
+    response_data = json.loads(post_request.text)
+    
+    #playlist vars
+    playlist_id = response_data['id']
+    playlist_url = response_data['external_urls']['spotify']
+
+    
+    to_display_amount=5
+    reco_df =pd.read_json(session['reco_df'], orient='split')
+    uri_list=[]
+    for index, row in reco_df.iterrows():
+        if to_display_amount==0:
+            break
+        to_display_amount = to_display_amount - 1
+        #search track
+        try:
+            track_search_api_endpoint = "{}/search?q={}type=track".format(SPOTIFY_API_URL,str(row['My Song']))
+            search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
+            search_data = json.loads(search_response.text)
+            for t in search_data['tracks']['items']:
+                print t['name'], t['artists'][0]['name']
+                uri_list.append(t['uri'])
+        except:
+            continue        
+
+    #ADD list of uris to playlist (add tracks)
+    add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
+    track_data = {
+        "uris": uri_list,
+    }
+    post_request = requests.post(add_track_api_endpoint, data=track_data, headers=authorization_header)
+    response_data = json.loads(post_request.text)       
+    
+
+    # Get user playlist data
+    # playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
+    # playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
+    # playlist_data = json.loads(playlists_response.text)
     
     # Combine profile and playlist data to display
-    display_arr = [profile_data] + playlist_data["items"]
-    session['callback_playlist'] = display_arr
+    # display_arr = [profile_data] + playlist_data["items"]
+    session['callback_playlist'] = playlist_url
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
     # uartist =session['uartist']
@@ -152,7 +194,7 @@ def main():
     if request.form['btn'] == 'search':
         try:
             session.clear()
-            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
+            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagew.csv"
             
             usong=request.form['song']
             uartist=request.form['artist']
@@ -171,6 +213,49 @@ def main():
             except Exception as e:
                 err_msg = str(e) + ".oops, seems like the song's lyrics could not be found, please try another song...or contact me :)"
                 return render_template('index.html', display_alert="block", err_msg=err_msg)
+
+            tokenized_song = tokenize_song(test_lyric)
+            user_data, x_names = get_song_data(tokenized_song)
+
+            all_data = pd.read_csv(ds, encoding="utf-8")
+
+            if len(user_data)==0 or user_data[0]==0.0:
+                return render_template('index.html', display_alert="block", 
+                    err_msg="oops, seems like the song could not be analyzed correctly...error, contact me :)")
+
+            user_data = np.array(user_data)
+            user_data = user_data.reshape(1,-1)
+            X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
+            user_scaled_data= scaler.transform(user_data)
+            
+            reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
+            session['reco_df']=reco_df.to_json(orient='split')
+            
+            
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+
+            return render_template('index.html', scroll="recos", 
+                song_name=usong.upper(), artist_name=uartist.upper(),
+                reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+        except Exception as e:
+            err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
+            return render_template('index.html', display_alert="block", err_msg=err_msg)
+    elif request.form['btn'] == 'custom_search':
+        try:
+            session.clear()
+            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
+            
+            usong="Custom Text"
+            uartist="Your Input"
+
+            session['usong']=usong
+            session['uartist']=uartist
+
+            if len(request.form['custom_text'])<100:
+                return render_template('index.html', display_alert="block", 
+                    err_msg="oops, please enter at least 100 or more characters for a valid analysis!")
+
+            test_lyric = get_custom_text_lyric(request.form['custom_text'])
 
             tokenized_song = tokenize_song(test_lyric)
             user_data, x_names = get_song_data(tokenized_song)

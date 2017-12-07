@@ -163,7 +163,8 @@ def get_euc_dist(set1,set2,set1_y,set2_y,n_top=10):
     ed_df_top['Rank'] = range(1,len(ed_df_top.index)+1)
     ed_df_top['distance'] =ed_df_top['distance'].round(2)
     ed_df_top = ed_df_top.rename(columns={'distance': 'Distance', 'to': 'My Songs', 'rel_conf': 'Relative_Confidence'})
-    return ed_df_top[["Rank",'My Songs','Distance']]
+    ed_df_top['My Song'], ed_df_top['Artist'] = ed_df_top['My Songs'].str.split('-', 1).str
+    return ed_df_top[["Rank",'Artist','My Song','Distance']]
 
 def search_musix_track(search_term):
     p = re.compile('\/lyrics\/*')
@@ -346,6 +347,11 @@ def get_song_data(tokenized_song):
     x_data = x_data + stats
     return x_data, x_names
 
+def get_custom_text_lyric(text):
+    text_stripped = re.sub(' +',' ',text)
+    text_stripped = text_stripped.replace("\n\n","\n")
+    text_stripped = text_stripped.replace("\r","\n")
+    return text_stripped
 
 def search_musix_corpus(artists, pages=2,corpus_file='lyric_corpus.p'):
     p = re.compile('\/lyrics\/*')

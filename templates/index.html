@@ -65,6 +65,21 @@
 		</form>
 		</div>
 		</div>
+		<p class="lead mb-5">OR I can recommend you songs based on any custom text (lyrics, poems, fiction etc.):</p>
+		<div class="row">
+      	<div class="col-lg-12">
+      	<form method="POST">
+		  <div class="form-row align-items-center">
+		    <div class="form-group">
+			    <label for="custom_text">Enter Custom Text:</label>
+			    <textarea name="custom_text" maxlength="300" class="form-control" id="custom_text" rows="3" placeholder="Please enter 100 to 300 characters."></textarea>
+			 </div>
+		      <button type="submit" class="btn btn-primary js-scroll-trigger btn-xl" name="btn" value="search_custom">Submit</button>
+		    
+		  </div>
+		</form>
+		</div>
+		</div>
 <!--
         <form method="POST">
         <div class="row">
@@ -142,7 +157,7 @@
 		</form>
 		{% else %}
 		<div class="col-lg-10 mx-auto text-center">
-			<h4> Your Spotify Playlist has been created for this set of reccomendations.</h4><br>
+			<h4> Your Spotify Playlist has been created for this set of reccomendations: {{ session.callback_playlist }}</h4><br>
 			<h5> Search another song!</h5>
 		</div>
 		{% endif %}
