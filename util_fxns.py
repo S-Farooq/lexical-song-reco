@@ -394,26 +394,27 @@ def search_musix_corpus(artists, pages=2,corpus_file='lyric_corpus.p'):
     #                 print song_page
                     try:
                         r  = requests.get(song_page, headers={'User-Agent': useragent})
+                    
+                        soup = BeautifulSoup(r.content, "lxml")
+        #                 print soup
+                        song_name = soup.find_all('h1',{'class':'mxm-track-title__track'})
+                        song_name = song_name[0].text
+                        song_name = song_name[6:] + "-" + a
+                        print song_name.encode(encoding='UTF-8',errors='ignore')
+                        lyrics = soup.find_all('p',{'class':'mxm-lyrics__content'})
+        #                 print lyrics
+                        if len(lyrics)==0:
+                            print "No lyrics found for {song}".format(song=song_page)
+                        for l in lyrics:
+                            song_lyrics.append(l.text)
+
+                        song_lyrics  = "\n".join(song_lyrics)
+                        song_lyrics = song_lyrics.replace("\n\n","\n")
+        #                 print song_lyrics
+                        artist_lyrics[song_name]=song_lyrics
                     except:
                         print "cant access lyric page for {song_page},.".format(song_page=song_page)
                         continue
-                    soup = BeautifulSoup(r.content, "lxml")
-    #                 print soup
-                    song_name = soup.find_all('h1',{'class':'mxm-track-title__track'})
-                    song_name = song_name[0].text
-                    song_name = song_name[6:] + "-" + a
-                    print song_name.encode(encoding='UTF-8',errors='ignore')
-                    lyrics = soup.find_all('p',{'class':'mxm-lyrics__content'})
-    #                 print lyrics
-                    if len(lyrics)==0:
-                        print "No lyrics found for {song}".format(song=song_page)
-                    for l in lyrics:
-                        song_lyrics.append(l.text)
-
-                    song_lyrics  = "\n".join(song_lyrics)
-                    song_lyrics = song_lyrics.replace("\n\n","\n")
-    #                 print song_lyrics
-                    artist_lyrics[song_name]=song_lyrics
     #                 break
 
         lyric_corpus[a] = artist_lyrics
