@@ -491,7 +491,7 @@ def my_form():
         return render_template('index.html')
 
 @app.route('/', methods=['POST', 'GET'])
-return back.redirect()
+@back.anchor
 def main():
     if request.form['btn'] == 'search':
         try:
