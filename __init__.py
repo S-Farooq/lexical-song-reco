@@ -425,7 +425,7 @@ def callback():
     
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
-    reco_df =session['reco_df']
+    reco_df =pd.read_json(session['reco_df'], orient='split')
     usong =session['usong']
     uartist =session['uartist']
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
@@ -484,7 +484,7 @@ def main():
             user_scaled_data= scaler.transform(user_data)
             
             reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
-            session['reco_df']=reco_df
+            session['reco_df']=reco_df.to_json(orient='split')
             
             
             reco_display = get_mrkup_from_df(reco_df)
@@ -499,7 +499,7 @@ def main():
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
     elif request.form['btn'] == 'more':
-        reco_df =session['reco_df']
+        reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
         uartist =session['uartist']
         reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
