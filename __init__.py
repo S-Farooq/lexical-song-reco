@@ -361,6 +361,7 @@ def main():
         <th>{columns}</th></tr></thead><tbody>
       """.format(columns="</th><th>".join(reco_df.columns))]
     for index, row in reco_df.iterrows():
+        row = [str(x) for x in row]
         reco_mrkup.append("""<tr>
         <th>{vals}</th></tr>
             """.format(vals="</th><th>".join(row)))
