@@ -53,7 +53,7 @@
 		      </div>
 		    </div>
 		    <div class="col-md-2">
-		      <button type="submit" class="btn btn-primary js-scroll-trigger">Submit</button>
+		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="search">Submit</button>
 		    </div>
 		  </div>
 		</form>
@@ -100,6 +100,32 @@
            {{ reco_df }}
           </div>
         </div>
+        <div class="row">
+      	<div class="col-lg-12">
+      	<form method="POST">
+		  <div class="form-row align-items-center">
+		    <div class="col-md-8">
+		      <label class="sr-only" for="username">Username</label>
+		      <div class="input-group mb-2 mb-sm-0">
+		        <div class="input-group-addon">Username</div>
+		      <input name="username" type="text" class="form-control mb-2 mb-sm-0" id="username" placeholder="shahamfarooq">
+		    	</div>
+		    </div>
+		    <!--
+		    <div class="col-md-5">
+		      <label class="sr-only" for="artist">Artist</label>
+		      <div class="input-group mb-2 mb-sm-0">
+		        <div class="input-group-addon">Artist</div>
+		        <input name="artist" type="text" class="form-control" id="artist" placeholder="The Fray">
+		      </div>
+		    </div>-->
+		    <div class="col-md-4">
+		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="playlist">Create Spotify Playlist</button>
+		    </div>
+		  </div>
+		</form>
+		</div>
+		</div>
       </div>
     </section>
 
