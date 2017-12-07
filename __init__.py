@@ -424,13 +424,15 @@ def callback():
     
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
+    session['callback_playlist'] = display_arr
     reco_df =pd.read_json(session['reco_df'], orient='split')
     usong =session['usong']
     uartist =session['uartist']
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-    return redirect(url_for('.my_form', 
-            song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(display_arr, indent=4)),  display="block"))
+    return redirect(url_for('.main'), code=307)
+    # return redirect(url_for('.main', 
+    #         song_name=usong.upper(), artist_name=uartist.upper(),
+    #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(display_arr, indent=4)),  display="block"))
 
     # return redirect('index.html',
     #         song_name=usong.upper(), artist_name=uartist.upper(),
@@ -507,7 +509,17 @@ def main():
             song_name=usong.upper(), artist_name=uartist.upper(),
             reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     else:
-        return render_template("index.html")
+        reco_df =pd.read_json(session['reco_df'], orient='split')
+        usong =session['usong']
+        uartist =session['uartist']
+        reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
+        to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(session['callback_playlist'], indent=4)) 
+
+        return render_template('index.html',
+            song_name=usong.upper(), artist_name=uartist.upper(),
+            reco_df=to_show_reco,  display="block")
+    # else:
+    #     return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
