@@ -138,8 +138,10 @@ def callback():
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
 
+            if len(search_data['tracks']['items'])==0:
+                continue
             artist_choices=[]
-            for t in search_data['tracks']['items'][:]:
+            for t in search_data['tracks']['items']:
                 artist_choices.append(t['artists'][0]['name'].upper())
             
             closest_artist = difflib.get_close_matches(uartist, artist_choices,1)
@@ -149,8 +151,7 @@ def callback():
                 if t['artists'][0]['name'].upper()==closest_artist:
                     uri_list.append(t['uri'])
         except:
-            session['callback_playlist'] = str(to_display_amount)
-            return redirect(url_for('.my_form'))
+            continue
 
     #ADD list of uris to playlist (add tracks)
     add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
