@@ -1,5 +1,5 @@
-import spotipy
 import sys
+import spotipy
 import spotipy.util as util
 
 scope = 'user-library-read'
@@ -11,7 +11,7 @@ else:
     sys.exit()
 
 token = util.prompt_for_user_token(username, scope, client_id='5f535ebef74b42d58590161e7bfcf653',
-    client_secret='b9f8b9f7c055433894bdcef35a2905f0')
+    client_secret='b9f8b9f7c055433894bdcef35a2905f0', redirect_uri="http://songreco.shaham.me/callback/")
 
 if token:
     sp = spotipy.Spotify(auth=token)
@@ -21,3 +21,4 @@ if token:
         print track['name'] + ' - ' + track['artists'][0]['name']
 else:
     print "Can't get token for", username
+
