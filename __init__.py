@@ -376,7 +376,7 @@ def auth_spot():
     # Auth Step 1: Authorization
     url_args = "&".join(["{}={}".format(key,urllib.quote(val)) for key,val in auth_query_parameters.iteritems()])
     auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
-    return redirect(auth_url)
+    return auth_url
 
 
 @app.route("/callback/q")
@@ -466,8 +466,8 @@ def main():
             song_name=request.form['song'].upper(), artist_name=request.form['artist'].upper(),
             reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     elif request.form['btn'] == 'playlist':
-        auth_spot()
-        
+        redirect(auth_spot())
+
 if __name__ == '__main__':
     app.run(debug=True, port=80)
     main()
