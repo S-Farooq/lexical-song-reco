@@ -449,7 +449,9 @@ def my_form():
         usong =session['usong']
         uartist =session['uartist']
         reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-        to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(session['callback_playlist'], indent=4)) 
+        to_display_dict = '<pre>' + pprint.pformat(session['callback_playlist']) + '</pre>'
+        # to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + to_display_dict) 
+        to_show_reco=Markup(to_display_dict) 
 
         return render_template('index.html', scroll="recos",
             song_name=usong.upper(), artist_name=uartist.upper(),
@@ -499,7 +501,7 @@ def main():
             session['reco_df']=reco_df.to_json(orient='split')
             
             
-            reco_display = get_mrkup_from_df(reco_df)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
 
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
