@@ -429,7 +429,7 @@ def callback():
     # usong =session['usong']
     # uartist =session['uartist']
     # reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-    return redirect(url_for('.main'), code=307)
+    return redirect(url_for('.my_form'), code=307)
     # return redirect(url_for('.main', 
     #         song_name=usong.upper(), artist_name=uartist.upper(),
     #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(display_arr, indent=4)),  display="block"))
