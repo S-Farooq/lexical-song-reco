@@ -350,9 +350,8 @@ class back(object):
     def redirect(default=default_view, cookie=cookie):
         return redirect(back.url(default, cookie))
 
-back = back()
-app = Flask(__name__)
 
+        
 
 import json
 import base64
@@ -363,7 +362,7 @@ import urllib
 
 
 app = Flask(__name__)
-
+back = back()
 #  Client Keys
 CLIENT_ID = "5f535ebef74b42d58590161e7bfcf653"
 CLIENT_SECRET = "b9f8b9f7c055433894bdcef35a2905f0"
@@ -461,7 +460,7 @@ def callback():
     # uartist =session['uartist']
     # reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
     return back.redirect()
-    
+
     # return redirect(url_for('.my_form'))
     # return redirect(url_for('.main', 
     #         song_name=usong.upper(), artist_name=uartist.upper(),
