@@ -461,14 +461,14 @@ def get_corpus_dataframe(tokenized_lyric_file, output_file="dataframe_storage.cs
 
 
 if __name__ == '__main__':
-    tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_corpusw.p"
-    lc='/var/www/FlaskApp/FlaskApp/lyric_corpusw.p'
-    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagew.csv"
+    tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_corpuswpop.p"
+    lc='/var/www/FlaskApp/FlaskApp/lyric_corpuswpop.p'
+    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop.csv"
     artists = ["the national", "Editors", "chvrches", "william fitzsimmons", "vienna teng",
         "oh wonder",'the shins','the killers','the strokes','bleachers',
         "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence and the machine", "dawud wharnsby",
         "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
     
-    lyric_corpus = search_musix_corpus(artists,pages=5,corpus_file=lc)
+    lyric_corpus = search_musix_corpus(artists,pages=2,corpus_file=lc)
     tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
     all_data = get_corpus_dataframe(tlc, output_file=ds)
