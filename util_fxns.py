@@ -3,7 +3,7 @@ import numpy as np
 
 #import matplotlib
 #import matplotlib.pyplot as plt
-
+#import plotly
 #from sklearn import metrics
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
@@ -19,9 +19,9 @@ from sklearn.metrics.pairwise import euclidean_distances
 # from mpl_toolkits.mplot3d import Axes3D
 
 import re
-import requests  
+import requests
 from bs4 import BeautifulSoup
-#import nltk
+import nltk
 import pprint
 
 nltk.data.path.append("/home/shahamfarooq/nltk_data/")
@@ -490,4 +490,3 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.3)
     reco_df, full_reco_df = get_euc_dist(X_test,X_train,y_test,y_train,n_top=5)
     print full_reco_df.head()
-
