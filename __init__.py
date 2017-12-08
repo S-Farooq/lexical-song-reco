@@ -298,9 +298,6 @@ def main():
             if len(user_data)==0 or user_data[0]==0.0:
                 return render_template('index.html', display_alert="block", 
                     err_msg="oops, seems like the song could not be analyzed correctly...error, contact me :)")
-            return render_template('index.html', scroll="recos", 
-                song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df="blah1",  display="block")
                 
             user_data = np.array(user_data)
             user_data = user_data.reshape(1,-1)
