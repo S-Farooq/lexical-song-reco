@@ -323,9 +323,7 @@ def get_word_stats(input_text):
         names.append(k)
     return stats, names
 
-def get_song_data(tokenized_song, test=False):
-    if test:
-        tokenized_song="Test text to get the x_names field lol what ever"
+def get_song_data(tokenized_song):
 
     lyrics = tokenized_song
     #get sentences without tokens
@@ -487,7 +485,9 @@ if __name__ == '__main__':
         ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
         all_data = pd.read_csv(ds, encoding="utf-8")
 
-    dummy_var, x_names = get_song_data('',test=True)
+    test_lyric = "Test text to get the x_names field lol what ever"
+    tokenized_song = tokenize_song(test_lyric)
+    dummy_var, x_names = get_song_data(tokenized_song)
 
     X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.3)
     reco_df, full_reco_df = get_euc_dist(X_test,X_train,y_test,y_train,n_top=5)
