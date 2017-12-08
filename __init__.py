@@ -149,7 +149,7 @@ def callback():
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
 
-            to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
+            # to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
                 for t in search_data['tracks']['items']:
@@ -182,7 +182,7 @@ def callback():
     # Combine profile and playlist data to display
     # display_arr = [profile_data] + playlist_data["items"]
     session['callback_playlist'] = Markup("<a href='{playlist_url}' target='_blank'><h3>Your New Lex-Recos Playlist</h3></a>".format(playlist_url=playlist_url))
-    session['callback_playlist'] = Markup("".join(to_display))
+    # session['callback_playlist'] = Markup("".join(to_display))
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
     # uartist =session['uartist']
