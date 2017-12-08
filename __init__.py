@@ -135,7 +135,9 @@ def callback():
         to_display_amount = to_display_amount - 1
         #search track
         try:
-            track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,re.sub(r'[^a-zA-Z0-9]', '', str(row['My Song']).lower()))
+            song_to_search=re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())
+            song_to_search=re.sub(r'\s', '+', song_to_search)
+            track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,song_to_search)
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
             to_display.append("{}/search?q={}&type=track".format(SPOTIFY_API_URL,re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())))
