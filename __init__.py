@@ -11,7 +11,7 @@ sys.setdefaultencoding('utf-8')
 
 import json
 import base64
-import urllib
+import urllib, difflib
 
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response. 
@@ -152,11 +152,12 @@ def callback():
                 if t['artists'][0]['name'].upper()==closest_artist:
                     uri_list.append(t['uri'])
                     entered=True
-            session['callback_playlist'] = str(uartist)+str(artist_choices)
-            return redirect(url_for('.my_form'))   
+               
             if not entered:
                 uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
+            session['callback_playlist'] = str(uartist)+str(artist_choices)
+            return redirect(url_for('.my_form'))
             continue
 
     #ADD list of uris to playlist (add tracks)
@@ -180,7 +181,6 @@ def callback():
     # Combine profile and playlist data to display
     # display_arr = [profile_data] + playlist_data["items"]
     session['callback_playlist'] = Markup("<a href='{playlist_url}' target='_blank'><h3>Your New Lex-Recos Playlist</h3></a>".format(playlist_url=playlist_url))
-    session['callback_playlist'] = str(closest_artist)+str(artist_choices)
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
     # uartist =session['uartist']
