@@ -50,6 +50,10 @@ auth_query_parameters = {
     "client_id": CLIENT_ID
 }
 
+corpus_dict = {
+        'Top songs by my artists': "dataframe_storagewpop2",
+    }
+
 def get_mrkup_from_df(reco_df,to_display_amount=10):
     reco_mrkup = ["""<table class="table table-hover"><thead><tr>
         <th>{columns}</th></tr></thead><tbody>
@@ -200,10 +204,6 @@ def callback():
 
 @app.route('/')
 def my_form():
-    corpus_dict = {
-        'Top songs by my artists': "dataframe_storagewpop2",
-    }
-    session['corpus_dict']= corpus_dict
     if 'reco_df' in session:
         reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
@@ -214,13 +214,13 @@ def my_form():
         if 'callback_playlist' in session:
             return render_template('index.html', scroll="recos",
                 song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df=to_show_reco,  display="block")
+                reco_df=to_show_reco,  display="block",corpus_dict=corpus_dict)
         else:
             return render_template('index.html', scroll="recos",
                 song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df=to_show_reco,  display="block")
+                reco_df=to_show_reco,  display="block", corpus_dict=corpus_dict)
     else:
-        return render_template('index.html')
+        return render_template('index.html', corpus_dict=corpus_dict)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -228,13 +228,9 @@ def main():
     if request.form['btn'] == 'search':
         try:
             session.clear()
-            corpus_dict = {
-                'Top songs by my artists': "dataframe_storagewpop2",
-            }
-            session['corpus_dict']= corpus_dict
             
             dbase = request.form['dbase']
-            csv_file = session['corpus_dict'][dbase]
+            csv_file = corpus_dict[dbase]
             ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file)
             
             usong=request.form['song']
@@ -244,7 +240,7 @@ def main():
             session['uartist']=uartist
             
             if usong=="" or uartist=="":
-                return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
                     err_msg="Please enter a song & artist to match against...")
 
             user_song_name = usong + " " + uartist
@@ -253,7 +249,7 @@ def main():
                 test_lyric = search_musix_track(user_song_name)
             except Exception as e:
                 err_msg = str(e) + ".oops, seems like the song's lyrics could not be found, please try another song...or contact me :)"
-                return render_template('index.html', display_alert="block", err_msg=err_msg)
+                return render_template('index.html', corpus_dict=corpus_dict,display_alert="block", err_msg=err_msg)
 
             tokenized_song = tokenize_song(test_lyric)
             user_data, x_names = get_song_data(tokenized_song)
@@ -261,7 +257,7 @@ def main():
             all_data = pd.read_csv(ds, encoding="utf-8")
 
             if len(user_data)==0 or user_data[0]==0.0:
-                return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
                     err_msg="oops, seems like the song could not be analyzed correctly...error, contact me :)")
 
             user_data = np.array(user_data)
@@ -277,15 +273,17 @@ def main():
 
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+                reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict)
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
-            return render_template('index.html', display_alert="block", err_msg=err_msg)
+            return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
     elif request.form['btn'] == 'search_custom':
         try:
             session.clear()
-            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
-            
+            dbase = request.form['dbase']
+            csv_file = corpus_dict[dbase]
+            ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file)
+
             usong="Custom Text"
             uartist="Your Input"
 
@@ -296,7 +294,7 @@ def main():
             user_song_name = usong + " " + uartist
             
             if len(request.form['custom_text'])<100:
-                return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
                     err_msg="oops, please enter at least 100 or more characters for a valid analysis!")
 
             test_lyric = get_custom_text_lyric(request.form['custom_text'])
@@ -307,7 +305,7 @@ def main():
             all_data = pd.read_csv(ds, encoding="utf-8")
 
             if len(user_data)==0 or user_data[0]==0.0:
-                return render_template('index.html', display_alert="block", 
+                return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
                     err_msg="oops, seems like the song could not be analyzed correctly...error, contact me :)")
                 
             user_data = np.array(user_data)
@@ -324,10 +322,10 @@ def main():
 
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+                reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict)
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
-            return render_template('index.html', display_alert="block", err_msg=err_msg)
+            return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
 
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
@@ -339,9 +337,9 @@ def main():
 
         return render_template('index.html',
             song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
+            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict)
     else:
-        return render_template("index.html")
+        return render_template("index.html",corpus_dict=corpus_dict)
 
 if __name__ == '__main__':
     app.run(debug=True, port=80)
