@@ -138,7 +138,7 @@ def callback():
             track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,re.sub(r'[^a-zA-Z0-9]', '', str(row['My Song']).lower()))
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
-
+            to_display.append("{}/search?q={}&type=track".format(SPOTIFY_API_URL,re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())))
             if len(search_data['tracks']['items'])==0:
                 continue
             artist_choices=[]
