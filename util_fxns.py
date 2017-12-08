@@ -469,7 +469,7 @@ if __name__ == '__main__':
     ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
     artists = ["the national", "Editors", "chvrches", "william fitzsimmons", "vienna teng",
         "oh wonder",'the shins','the killers','the strokes','bleachers',
-        "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence and the machine", "dawud wharnsby",
+        "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence + the machine", "dawud wharnsby",
         "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
     
     lyric_corpus = search_musix_corpus(artists,pages=1,corpus_file=lc)
