@@ -467,6 +467,7 @@ def get_corpus_dataframe(tokenized_lyric_file, output_file="dataframe_storage.cs
 
 
 if __name__ == '__main__':
+    data_only=False
     if len(sys.argv)>1 and sys.argv[1]=='dataonly':
         data_only = True
 
@@ -483,6 +484,7 @@ if __name__ == '__main__':
         tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
         all_data = get_corpus_dataframe(tlc, output_file=ds)
     else:
+        ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
         all_data = pd.read_csv(ds, encoding="utf-8")
 
     dummy_var, x_names = get_song_data('',test=True)
