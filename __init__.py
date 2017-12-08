@@ -136,11 +136,11 @@ def callback():
         #search track
         try:
             song_to_search=re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())
-            song_to_search=re.sub(r'\s', '+', song_to_search)
+            song_to_search=re.sub(r'\s+', '+', song_to_search)
             track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,song_to_search)
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
-            to_display.append("{}/search?q={}&type=track".format(SPOTIFY_API_URL,re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())))
+            to_display.append("<p>{}/search?q={}&type=track</p>".format(SPOTIFY_API_URL,song_to_search))
             if len(search_data['tracks']['items'])==0:
                 continue
             artist_choices=[]
@@ -148,7 +148,7 @@ def callback():
                 artist_choices.append(t['artists'][0]['name'].upper())
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
-            to_display.append(str(row['Artist']).upper() + "-"+str(artist_choices)+"<br>")
+            to_display.append("<p>"str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
                 for t in search_data['tracks']['items']:
