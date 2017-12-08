@@ -200,6 +200,10 @@ def callback():
 
 @app.route('/')
 def my_form():
+    corpus_dict = {
+        'Top songs by my artists': "dataframe_storagewpop2",
+    }
+    session['corpus_dict']= corpus_dict
     if 'reco_df' in session:
         reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
@@ -224,11 +228,10 @@ def main():
     if request.form['btn'] == 'search':
         try:
             session.clear()
-            corpus_dict = {
-            'top songs by my artists': "dataframe_storagewpop2",
-
-            }
-            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
+            
+            dbase = request.form['dbase']
+            csv_file = session['corpus_dict'][dbase]
+            ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file)
             
             usong=request.form['song']
             uartist=request.form['artist']

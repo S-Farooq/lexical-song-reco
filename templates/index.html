@@ -55,20 +55,30 @@
       	
       	<form method="POST">
 		  <div class="form-row align-items-center">
-		    <div class="col-md-5">
+		    <div class="col-md-4">
 		      <label class="sr-only" for="song">Song</label>
 		      <div class="input-group mb-2 mb-sm-0">
 		        <div class="input-group-addon">Song</div>
 		      <input name="song" type="text" class="form-control" id="song" placeholder="Ex. How to Save a Life">
 		    	</div>
 		    </div>
-		    <div class="col-md-5">
+		    <div class="col-md-3">
 		      <label class="sr-only" for="artist">Artist</label>
 		      <div class="input-group mb-2 mb-sm-0">
 		        <div class="input-group-addon">Artist</div>
 		        <input name="artist" type="text" class="form-control" id="artist" placeholder="Ex. The Fray">
 		      </div>
 		    </div>
+		    <div class="col-md-3">
+		    <div class="form-group">
+				  <label for="dbase">My Playlists:</label>
+				  <select name="dbase" class="form-control" id="dbase">
+				    {% for x in corpus_dict.keys() %}
+					<option value="{{ x }}"{% if loop.first %} SELECTED{% endif %}>{{ x }}</option>
+					{% endfor %}
+				  </select>
+				</div>
+			</div>
 		    <div class="col-md-2">
 		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="search">Submit</button>
 		    </div>
