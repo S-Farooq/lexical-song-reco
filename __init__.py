@@ -156,8 +156,8 @@ def callback():
                     if t['artists'][0]['name'].upper()==closest_artist:
                         uri_list.append(t['uri'])
                         break
-            else:
-                uri_list.append(search_data['tracks']['items'][0]['uri'])
+            # else:
+            #     uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
             continue
 
