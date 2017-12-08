@@ -124,9 +124,11 @@
     <section class="content-section bg-light" id="recos" style="display:{{ display }}">
     {% if scroll %}
 	<script>
+		{% if session.callback_playlist %}
+	    document.getElementById('spotify_show').scrollIntoView();
+	    {% else %}
 	    document.getElementById('{{ scroll }}').scrollIntoView();
-	    // or
-	    document.location.hash = '#' + '{{ scroll }}';
+		{% endif %}
 	</script>
 	{% endif %}
       <div class="container text-center">
@@ -170,7 +172,7 @@
 		  </div>
 		</form>
 		{% else %}
-		<div class="col-lg-10 mx-auto text-center">
+		<div class="col-lg-10 mx-auto text-center" id="spotify_show">
 			<h4> Your Spotify Playlist has been created for this set of reccomendations:</h4>{{ session.callback_playlist }}<br>
 			<h5> Search another song!</h5>
 		</div>
