@@ -154,6 +154,7 @@ def callback():
                 for t in search_data['tracks']['items']:
                     if t['artists'][0]['name'].upper()==closest_artist:
                         uri_list.append(t['uri'])
+                        break
             else:
                 uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
@@ -182,7 +183,7 @@ def callback():
     # Combine profile and playlist data to display
     # display_arr = [profile_data] + playlist_data["items"]
     session['callback_playlist'] = Markup("<a href='{playlist_url}' target='_blank'><h3>Your New Lex-Recos Playlist</h3></a>".format(playlist_url=playlist_url))
-    session['callback_playlist'] = Markup(to_display)
+    session['callback_playlist'] = Markup("".join(to_display))
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
     # uartist =session['uartist']
