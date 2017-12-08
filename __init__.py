@@ -273,7 +273,7 @@ def main():
     elif request.form['btn'] == 'search_custom':
         try:
             session.clear()
-            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
+            ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagew.csv"
             
             usong="Custom Text"
             uartist="Your Input"
@@ -281,7 +281,7 @@ def main():
             session['usong']=usong
             session['uartist']=uartist
 
-            
+
             user_song_name = usong + " " + uartist
             
             if len(request.form['custom_text'])<100:
@@ -298,13 +298,23 @@ def main():
             if len(user_data)==0 or user_data[0]==0.0:
                 return render_template('index.html', display_alert="block", 
                     err_msg="oops, seems like the song could not be analyzed correctly...error, contact me :)")
-
+            return render_template('index.html', scroll="recos", 
+                song_name=usong.upper(), artist_name=uartist.upper(),
+                reco_df="blah1",  display="block")
+                
             user_data = np.array(user_data)
             user_data = user_data.reshape(1,-1)
             X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
             user_scaled_data= scaler.transform(user_data)
+            return render_template('index.html', scroll="recos", 
+                song_name=usong.upper(), artist_name=uartist.upper(),
+                reco_df="blah2",  display="block")
             
             reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
+
+            return render_template('index.html', scroll="recos", 
+                song_name=usong.upper(), artist_name=uartist.upper(),
+                reco_df="blah",  display="block")
             session['reco_df']=reco_df.to_json(orient='split')
             
             
