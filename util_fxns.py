@@ -2,14 +2,15 @@ from time import time
 import numpy as np
 
 #import matplotlib
+#matplotlib.use('Qt5Agg')
 #import matplotlib.pyplot as plt
-
-from sklearn import metrics
+#import plotly 
+#from sklearn import metrics
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_selection import VarianceThreshold
-from sklearn.ensemble import ExtraTreesClassifier
+#from sklearn.ensemble import ExtraTreesClassifier
 
 #import matplotlib
 
@@ -21,7 +22,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 import re
 import requests  
 from bs4 import BeautifulSoup
-import nltk
+#import nltk
 import pprint
 
 nltk.data.path.append("/home/shahamfarooq/nltk_data/")
@@ -466,12 +467,12 @@ def get_corpus_dataframe(tokenized_lyric_file, output_file="dataframe_storage.cs
 if __name__ == '__main__':
     tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_corpuswpop2.p"
     lc='/var/www/FlaskApp/FlaskApp/lyric_corpuswpop2.p'
-    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
+    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagetest.csv"
     artists = ["the national", "Editors", "chvrches", "william fitzsimmons", "vienna teng",
         "oh wonder",'the shins','the killers','the strokes','bleachers',
         "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence + the machine", "dawud wharnsby",
         "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
     
-    lyric_corpus = search_musix_corpus(artists,pages=1,corpus_file=lc)
-    tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
-    all_data = get_corpus_dataframe(tlc, output_file=ds)
+    #lyric_corpus = search_musix_corpus(artists,pages=1,corpus_file=lc)
+    #tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
+    #all_data = get_corpus_dataframe(tlc, output_file=ds)
