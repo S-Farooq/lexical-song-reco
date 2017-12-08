@@ -1,15 +1,15 @@
 from time import time
 import numpy as np
 
-import matplotlib
+#import matplotlib
 #import matplotlib.pyplot as plt
 
-from sklearn import metrics
+#from sklearn import metrics
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_selection import VarianceThreshold
-from sklearn.ensemble import ExtraTreesClassifier
+#from sklearn.ensemble import ExtraTreesClassifier
 
 #import matplotlib
 
@@ -21,7 +21,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 import re
 import requests  
 from bs4 import BeautifulSoup
-import nltk
+#import nltk
 import pprint
 
 nltk.data.path.append("/home/shahamfarooq/nltk_data/")
@@ -472,7 +472,7 @@ if __name__ == '__main__':
 
     tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_corpuswpop2.p"
     lc='/var/www/FlaskApp/FlaskApp/lyric_corpuswpop2.p'
-    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
+    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagetest.csv"
     artists = ["the national", "Editors", "chvrches", "william fitzsimmons", "vienna teng",
         "oh wonder",'the shins','the killers','the strokes','bleachers',
         "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence + the machine", "dawud wharnsby",
@@ -490,3 +490,4 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.3)
     reco_df, full_reco_df = get_euc_dist(X_test,X_train,y_test,y_train,n_top=5)
     print full_reco_df.head()
+
