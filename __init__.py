@@ -303,15 +303,12 @@ def main():
             user_data = user_data.reshape(1,-1)
             X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
             user_scaled_data= scaler.transform(user_data)
-            return render_template('index.html', scroll="recos", 
-                song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df="blah2",  display="block")
             
             reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,n_top=25)
 
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df="blah",  display="block")
+                reco_df=Markup(reco_df.to_html()),  display="block")
             session['reco_df']=reco_df.to_json(orient='split')
             
             
