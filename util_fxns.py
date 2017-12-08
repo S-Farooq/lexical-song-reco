@@ -4,7 +4,7 @@ import numpy as np
 #import matplotlib
 #matplotlib.use('Qt5Agg')
 #import matplotlib.pyplot as plt
-#import plotly 
+#import plotly
 #from sklearn import metrics
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
@@ -20,9 +20,9 @@ from sklearn.metrics.pairwise import euclidean_distances
 # from mpl_toolkits.mplot3d import Axes3D
 
 import re
-import requests  
+import requests
 from bs4 import BeautifulSoup
-#import nltk
+import nltk
 import pprint
 
 nltk.data.path.append("/home/shahamfarooq/nltk_data/")
@@ -473,6 +473,6 @@ if __name__ == '__main__':
         "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence + the machine", "dawud wharnsby",
         "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
     
-    #lyric_corpus = search_musix_corpus(artists,pages=1,corpus_file=lc)
-    #tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
-    #all_data = get_corpus_dataframe(tlc, output_file=ds)
+    lyric_corpus = search_musix_corpus(artists,pages=2,corpus_file=lc)
+    tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
+    all_data = get_corpus_dataframe(tlc, output_file=ds)
