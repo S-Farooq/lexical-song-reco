@@ -143,7 +143,8 @@ def get_euc_dist(set1,set2,set1_y,set2_y,feature_names,n_top=10):
         df['from']=set1_y[n]
         df['to_ind']=range(len(set2_y))
         df['from_ind']=n
-        df[feature_names]=set1[n,:]
+        df_feat = pd.DataFrame(set1[n,:], columns=feature_names)
+        df = pd.concat([df, df_feat], axis=1)
         ed_df = ed_df.append(df)
 
     # cols = ['from','to','from_ind','to_ind','distance']
