@@ -148,7 +148,7 @@ def callback():
                 artist_choices.append(t['artists'][0]['name'].upper())
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
-            to_display.append("<p>"str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
+            to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
                 for t in search_data['tracks']['items']:
