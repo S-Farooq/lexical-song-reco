@@ -228,6 +228,10 @@ def main():
     if request.form['btn'] == 'search':
         try:
             session.clear()
+            corpus_dict = {
+                'Top songs by my artists': "dataframe_storagewpop2",
+            }
+            session['corpus_dict']= corpus_dict
             
             dbase = request.form['dbase']
             csv_file = session['corpus_dict'][dbase]
