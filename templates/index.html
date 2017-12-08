@@ -55,20 +55,30 @@
       	
       	<form method="POST">
 		  <div class="form-row align-items-center">
-		    <div class="col-md-5">
+		    <div class="col-md-4">
 		      <label class="sr-only" for="song">Song</label>
 		      <div class="input-group mb-2 mb-sm-0">
 		        <div class="input-group-addon">Song</div>
 		      <input name="song" type="text" class="form-control" id="song" placeholder="Ex. How to Save a Life">
 		    	</div>
 		    </div>
-		    <div class="col-md-5">
+		    <div class="col-md-3">
 		      <label class="sr-only" for="artist">Artist</label>
 		      <div class="input-group mb-2 mb-sm-0">
 		        <div class="input-group-addon">Artist</div>
 		        <input name="artist" type="text" class="form-control" id="artist" placeholder="Ex. The Fray">
 		      </div>
 		    </div>
+		    <div class="col-md-3">
+		    <div class="form-group">
+				  <label for="dbase">My Playlists:</label>
+				  <select name="dbase" class="form-control" id="dbase">
+				    {% for x in corpus_dict.keys() %}
+					<option value="{{ x }}"{% if loop.first %} SELECTED{% endif %}>{{ x }}</option>
+					{% endfor %}
+				  </select>
+				</div>
+			</div>
 		    <div class="col-md-2">
 		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="search">Submit</button>
 		    </div>
@@ -124,9 +134,11 @@
     <section class="content-section bg-light" id="recos" style="display:{{ display }}">
     {% if scroll %}
 	<script>
+		{% if session.callback_playlist %}
+	    document.getElementById('spotify_show').scrollIntoView();
+	    {% else %}
 	    document.getElementById('{{ scroll }}').scrollIntoView();
-	    // or
-	    document.location.hash = '#' + '{{ scroll }}';
+		{% endif %}
 	</script>
 	{% endif %}
       <div class="container text-center">
@@ -170,7 +182,7 @@
 		  </div>
 		</form>
 		{% else %}
-		<div class="col-lg-10 mx-auto text-center">
+		<div class="col-lg-10 mx-auto text-center" id="spotify_show">
 			<h4> Your Spotify Playlist has been created for this set of reccomendations:</h4>{{ session.callback_playlist }}<br>
 			<h5> Search another song!</h5>
 		</div>

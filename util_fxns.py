@@ -2,7 +2,6 @@ from time import time
 import numpy as np
 
 #import matplotlib
-#matplotlib.use('Qt5Agg')
 #import matplotlib.pyplot as plt
 #import plotly
 #from sklearn import metrics
@@ -133,7 +132,7 @@ def get_fitted_clusters(X_train,X_test,y_train,y_test,x_names,user_song_name="",
 
 
 
-def get_euc_dist(set1,set2,set1_y,set2_y,n_top=10):
+def get_euc_dist(set1,set2,set1_y,set2_y,feature_names,n_top=10):
     ed_df = pd.DataFrame()
     ed = euclidean_distances(set1, set2)
     
@@ -144,15 +143,16 @@ def get_euc_dist(set1,set2,set1_y,set2_y,n_top=10):
         df['from']=set1_y[n]
         df['to_ind']=range(len(set2_y))
         df['from_ind']=n
+        df[feature_names]=set1[n,:]
         ed_df = ed_df.append(df)
 
-    cols = ['from','to','from_ind','to_ind','distance']
-    ed_df_p = ed_df[cols]
-    ed_df_p = ed_df_p.sort_values(['from_ind','distance'],ascending=True)
+    # cols = ['from','to','from_ind','to_ind','distance']
+    # ed_df_p = ed_df[cols]
+    # ed_df_p = ed_df_p.sort_values(['from_ind','distance'],ascending=True)
 
-    ed_df_p = ed_df_p.groupby('from').head(n_top)
+    # ed_df_p = ed_df_p.groupby('from').head(n_top)
     
-    cols = ['from','to','distance']
+    cols = ['from','to','distance'] + feature_names
     ed_df = ed_df[cols]
     ed_df = ed_df.sort_values(['from','distance'],ascending=True)
     
@@ -165,7 +165,7 @@ def get_euc_dist(set1,set2,set1_y,set2_y,n_top=10):
     ed_df_top['distance'] =ed_df_top['distance'].round(2)
     ed_df_top = ed_df_top.rename(columns={'distance': 'Distance', 'to': 'My Songs', 'rel_conf': 'Relative_Confidence'})
     ed_df_top['My Song'], ed_df_top['Artist'] = ed_df_top['My Songs'].str.split('-', 1).str
-    return ed_df_top[["Rank",'Artist','My Song','Distance']]
+    return ed_df_top[["Rank",'Artist','My Song','Distance']], ed_df_top
 
 def search_musix_track(search_term):
     p = re.compile('\/lyrics\/*')
@@ -323,8 +323,10 @@ def get_word_stats(input_text):
         names.append(k)
     return stats, names
 
-def get_song_data(tokenized_song):
-    
+def get_song_data(tokenized_song, test=False):
+    if test:
+        tokenized_song="Test text to get the x_names field lol what ever"
+
     lyrics = tokenized_song
     #get sentences without tokens
     lyrics_sep = []
@@ -465,6 +467,9 @@ def get_corpus_dataframe(tokenized_lyric_file, output_file="dataframe_storage.cs
 
 
 if __name__ == '__main__':
+    if len(sys.argv)>1 and sys.argv[1]=='dataonly':
+        data_only = True
+
     tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_corpuswpop2.p"
     lc='/var/www/FlaskApp/FlaskApp/lyric_corpuswpop2.p'
     ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagetest.csv"
@@ -473,6 +478,15 @@ if __name__ == '__main__':
         "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence + the machine", "dawud wharnsby",
         "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
     
-    lyric_corpus = search_musix_corpus(artists,pages=2,corpus_file=lc)
-    tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
-    all_data = get_corpus_dataframe(tlc, output_file=ds)
+    if not data_only:
+        lyric_corpus = search_musix_corpus(artists,pages=1,corpus_file=lc)
+        tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
+        all_data = get_corpus_dataframe(tlc, output_file=ds)
+    else:
+        all_data = pd.read_csv(ds, encoding="utf-8")
+
+    dummy_var, x_names = get_song_data('',test=True)
+
+    X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.3)
+    reco_df, full_reco_df = get_euc_dist(X_test,X_train,y_test,y_train,n_top=5)
+    print full_reco_df.head()
