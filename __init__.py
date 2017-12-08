@@ -270,7 +270,7 @@ def main():
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg)
-    elif request.form['btn'] == 'custom_search':
+    elif request.form['btn'] == 'search_custom':
         try:
             session.clear()
             ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage.csv"
