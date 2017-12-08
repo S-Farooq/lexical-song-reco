@@ -231,7 +231,7 @@ def main():
             
             dbase = request.form['dbase']
             csv_file = corpus_dict[dbase]
-            ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file)
+            ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file=csv_file)
             
             usong=request.form['song']
             uartist=request.form['artist']
@@ -282,7 +282,7 @@ def main():
             session.clear()
             dbase = request.form['dbase']
             csv_file = corpus_dict[dbase]
-            ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file)
+            ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file=csv_file)
 
             usong="Custom Text"
             uartist="Your Input"

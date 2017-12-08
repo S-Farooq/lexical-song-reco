@@ -55,7 +55,7 @@
       	
       	<form method="POST">
 		  <div class="form-row align-items-center">
-		    <div class="col-md-4">
+		    <div class="col-md-3">
 		      <label class="sr-only" for="song">Song</label>
 		      <div class="input-group mb-2 mb-sm-0">
 		        <div class="input-group-addon">Song</div>
@@ -70,9 +70,9 @@
 		      </div>
 		    </div>
 
-		    <div class="col-md-3">
+		    <div class="col-md-4">
 		      <div class="input-group mb-2 mb-sm-0">
-		      <div class="input-group-addon">My Playlists</div>
+		      <div class="input-group-addon">MyPlaylists</div>
 		      	<select name="dbase" class="form-control" id="dbase">
 				    {% for x in corpus_dict.keys() %}
 					<option value="{{ x }}"{% if loop.first %} SELECTED{% endif %}>{{ x }}</option>
@@ -98,9 +98,8 @@
 			    <textarea name="custom_text" maxlength="500" class="form-control" id="custom_text" rows="4" placeholder="Please enter 100 to 500 characters."></textarea>
 			 
 			 </div>
-		 </div>
-		 <div class="form-row align-items-center">
-			 <div class="col-md-offset-5 col-md-4">
+
+			 <div class="col-md-6">
 		    <div class="input-group mb-2 mb-sm-0">
 		      <div class="input-group-addon">My Playlists</div>
 		      	<select name="dbase" class="form-control" id="dbase">
@@ -110,11 +109,10 @@
 				  </select>
 			  </div>
 			</div>
-			 <div class="col-md-3">
+			 <div class="col-md-6">
 		      <button type="submit" class="btn btn-primary js-scroll-trigger btn-xl" name="btn" value="search_custom">Submit</button>
 		      </div>
-		    
-		  </div>
+		   </div>
 		</form>
 		</div>
 		</div>
