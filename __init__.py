@@ -134,7 +134,7 @@ def callback():
         to_display_amount = to_display_amount - 1
         #search track
         try:
-            track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,re.sub(r'[^a-zA-Z0-9]', '', str(row['My Song'])))
+            track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,re.sub(r'[^a-zA-Z0-9]', '', str(row['My Song']).lower()))
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
 
@@ -144,19 +144,16 @@ def callback():
             for t in search_data['tracks']['items']:
                 artist_choices.append(t['artists'][0]['name'].upper())
             
-            closest_artist = difflib.get_close_matches(uartist, artist_choices,1)
-            closest_artist = closest_artist[0]
-            print closest_artist
-            entered=False
-            for t in search_data['tracks']['items']:
-                if t['artists'][0]['name'].upper()==closest_artist:
-                    uri_list.append(t['uri'])
-                    entered=True
-               
-            if not entered:
+            closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
+            if len(closest_artists)>0:
+                closest_artist = closest_artists[0]
+                for t in search_data['tracks']['items']:
+                    if t['artists'][0]['name'].upper()==closest_artist:
+                        uri_list.append(t['uri'])
+            else:
                 uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
-            session['callback_playlist'] = str(uartist)+str(artist_choices)
+            session['callback_playlist'] = str(row['Artist']).upper()+str(artist_choices)
             return redirect(url_for('.my_form'))
             continue
 
