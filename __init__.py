@@ -281,6 +281,9 @@ def main():
             session['usong']=usong
             session['uartist']=uartist
 
+            
+            user_song_name = usong + " " + uartist
+            
             if len(request.form['custom_text'])<100:
                 return render_template('index.html', display_alert="block", 
                     err_msg="oops, please enter at least 100 or more characters for a valid analysis!")
