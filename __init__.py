@@ -270,7 +270,7 @@ def main():
             
             
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
-            user_data = np.array(user_data.tolist())
+            user_data = user_data[0,:]
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
