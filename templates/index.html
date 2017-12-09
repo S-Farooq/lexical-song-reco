@@ -243,7 +243,7 @@
 			   datasets : [
 			   {% for s in range(0,user_song_values|length) %}
 				      {		label: '{{ user_song_values[s][0] }}',
-				      		fillColor: background_colors[{{ s }}],
+				      		fillColor: '{{ colors[s] }}',
 				         data : [{% for item in user_song_values[s][1:] %}
 				                      {{item}},
 				                    {% endfor %}],

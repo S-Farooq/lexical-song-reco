@@ -275,11 +275,15 @@ def main():
             full_reco_df = full_reco_df.head(7)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
-
+            import random
+            r = lambda: random.randint(0,255)
+            colors=[]
+            for i in range(len(full_reco_df.index)):
+                colors.append('#%02X%02X%02X' % (r(),r(),r()))
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
-                user_song_values=full_reco_df,features=x_names)
+                user_song_values=full_reco_df,features=x_names,colors=colors)
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
@@ -329,12 +333,17 @@ def main():
             full_reco_df = full_reco_df.head(7)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
+            import random
+            r = lambda: random.randint(0,255)
+            colors=[]
+            for i in range(len(full_reco_df.index)):
+                colors.append('#%02X%02X%02X' % (r(),r(),r()))
 
             # user_scaled_data = user_scaled_data[0,:].tolist()
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
-                user_song_values=full_reco_df,features=x_names)
+                user_song_values=full_reco_df,features=x_names,colors=colors)
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
