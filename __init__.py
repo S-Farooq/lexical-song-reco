@@ -54,6 +54,23 @@ corpus_dict = {
         'Top songs by my artists': "dataframe_storagewpop2",
     }
 
+def get_feature_names(x_names):
+    features=[]
+    for x in x_names:
+        if x=="lex_div":
+            features.append("Lexical Diversity")
+        elif x=="content_frac":
+            features.append("% Non Stop Words")
+        elif x=="compound":
+            features.append("Overall Sentiment")
+        elif x=="avg_len_words":
+            features.append("Avg Length of Words")
+        elif x in ["neg","pos","neu"]:
+            features.append(x+" Sentiment")
+        else:
+            features.append(x)
+    return features
+            
 def get_mrkup_from_df(reco_df,to_display_amount=10):
     reco_mrkup = ["""<table class="table table-hover"><thead><tr>
         <th>{columns}</th></tr></thead><tbody>
@@ -296,12 +313,13 @@ def main():
 
             colors.append('696969')
             session['user_song_values']=full_reco_df
-            session['features']=x_names
+
+            session['features']=get_feature_names(x_names)
             session['colors']=colors
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
-                user_song_values=full_reco_df,features=x_names,colors=colors)
+                user_song_values=full_reco_df,features=session['features'],colors=colors)
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
@@ -359,14 +377,14 @@ def main():
 
             colors.append('696969')
             session['user_song_values']=full_reco_df
-            session['features']=x_names
+            session['features']=get_feature_names(x_names)
             session['colors']=colors
 
             # user_scaled_data = user_scaled_data[0,:].tolist()
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
-                user_song_values=full_reco_df,features=x_names,colors=colors)
+                user_song_values=full_reco_df,features=session['features'],colors=colors)
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)

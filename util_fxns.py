@@ -316,13 +316,12 @@ def get_word_stats(input_text):
     stats.append(unusual_words(text))
     stats.append(content_fraction(text))
     stats.append(avg_len_words(text))
-    names = ['unique_words', 'total_words','lexical_diversity','unusual_words','non_stopwords','avg_length_of_words']
+    names = ['unique_words', 'total_words','lex_div','unusual_words','content_frac','avg_len_words']
     text_joined = " ".join(text)
     ss = sid.polarity_scores(text_joined)
     for k in sorted(ss):
         stats.append(ss[k])
-        nm = k+"_sentiment"
-        names.append(nm)
+        names.append(k)
     return stats, names
 
 def get_song_data(tokenized_song):
