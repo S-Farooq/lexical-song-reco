@@ -222,11 +222,10 @@
     <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
 		<script>
 		   
-			var randomColorGenerator = function () { 
-			    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
-			};
+			for (var i = 0, len = labels.length; i < len; i++) {
+			   background_colors.push(getRandomColor());// I use @Benjamin method here
+			}
 		   // bar chart data
-		   console.log(randomColorGenerator());
 
 		   var data = {
 			   labels : [{% for item in features %}
@@ -235,10 +234,8 @@
 			   datasets : [
 			   {% for song in user_song_values %}
 				      {		label: '{{ song[0] }}',
-				      		fillColor: randomColorGenerator(), 
-			                strokeColor: randomColorGenerator(), 
-			                highlightFill: randomColorGenerator(),
-			                highlightStroke: randomColorGenerator(),
+				      		fillColor: background_colors, 
+			                strokeColor: background_colors,
 				         data : [{% for item in song[1:] %}
 				                      {{item}},
 				                    {% endfor %}],
