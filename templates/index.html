@@ -208,7 +208,7 @@
     {% endif %}
 
     {% if features %}
-    <section class="callout">
+    <section class="content-section bg-primary text-white">
     <div class="container text-center">
         <div class="row">
           	<div class="col-lg-12 mx-auto text-center">
@@ -226,6 +226,8 @@
 			    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
 			};
 		   // bar chart data
+		   console.log(randomColorGenerator());
+
 		   var data = {
 			   labels : [{% for item in features %}
 			                  "{{item}}",
@@ -244,7 +246,7 @@
 				      },
 				{% endfor %}
 			      ]
-		   }
+		   };
 
 		   var ctx = document.getElementById("myChart").getContext("2d");
 
