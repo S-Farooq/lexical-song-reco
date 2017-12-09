@@ -241,7 +241,7 @@
 			                  "{{item}}",
 			              {% endfor %}],
 			   datasets : [
-			   {% for s in range(len(user_song_values)) %}
+			   {% for s in range(0,user_song_values|length) %}
 				      {		label: '{{ user_song_values[s][0] }}',
 				      		fillColor: background_colors[{{ s }}], 
 			                strokeColor: background_color[{{ s }}],
