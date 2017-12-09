@@ -204,6 +204,7 @@ def callback():
 
 @app.route('/')
 def my_form():
+    session.clear()
     if 'reco_df' in session:
         reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
