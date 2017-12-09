@@ -204,7 +204,7 @@ def callback():
 
 @app.route('/')
 def my_form():
-    if 'reco_df' in session:
+    if 'callback_playlist' in session:
         reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
         uartist =session['uartist']
