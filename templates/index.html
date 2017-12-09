@@ -227,12 +227,14 @@
 			                  "{{item}}",
 			              {% endfor %}],
 			   datasets : [
-				      {		label: '{{ song_name }} - {{ artist_name }}',
-				         data : [{% for item in user_song_values %}
+			   {% for song in user_song_values %}
+				      {		label: '{{ song[0] }}',
+				         data : [{% for item in song[1:] %}
 				                      {{item}},
 				                    {% endfor %}],
 				         borderWidth: 3
 				      }
+				{% endfor %}
 			      ]
 		   }
 
