@@ -228,9 +228,6 @@
 			              {% endfor %}],
 			   datasets : [
 				      {		label: '{{ song_name }} - {{ artist_name }}',
-				            fillColor: "rgba(151,187,205,0.2)",
-				            strokeColor: "rgba(151,187,205,1)",
-				            pointColor: "rgba(151,187,205,1)",
 				         data : [{% for item in user_song_values %}
 				                      {{item}},
 				                    {% endfor %}],
@@ -243,7 +240,22 @@
 
 		   var myLineChart = new Chart(ctx, {
 			    type: 'line',
-			    data: data
+			    data: data,
+			    options: {
+			        scales: {
+			            xAxes: [{
+			                ticks: {
+			                    autoSkip: false
+			                }
+			            }],
+			            yAxes: [{
+					      scaleLabel: {
+					        display: true,
+					        labelString: 'Standard Deviations away from Mean'
+					      }
+					    }]
+			        }
+			    }
 			});
 		 
 		 
