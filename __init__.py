@@ -56,17 +56,29 @@ corpus_dict = {
 
 def get_feature_names(x_names):
     features=[]
+    dict_f = {
+    "NN": "Nouns",
+    "VB": "Verbs",
+    "PR": "Pronouns",
+    "RB": "Adverbs",
+    "RBR": "Comparative RB",
+    "RBS": "Superlative RB",
+    "UH": "Interjections",
+    "JJ": "Adjective",
+    "JJR": "Comparative JJ",
+    "JJS": "Superlative JJ",
+    "EX": "Existential *there*",
+    "lex_div": "Lexical Diversity",
+    "content_frac": "% of Non Stopwords",
+    "avg_len_words": "Avg Word Length",
+    "compound": "Overall Sentiment",
+
+    }
     for x in x_names:
-        if x=="lex_div":
-            features.append("Lexical Diversity")
-        elif x=="content_frac":
-            features.append("% Non Stop Words")
-        elif x=="compound":
-            features.append("Overall Sentiment")
-        elif x=="avg_len_words":
-            features.append("Avg Length of Words")
-        elif x in ["neg","pos","neu"]:
+        if x in ["neg","pos","neu"]:
             features.append(x+" Sentiment")
+        elif x in dict_f.keys():
+            features.append(dict_f[x])
         else:
             features.append(x)
     return features
