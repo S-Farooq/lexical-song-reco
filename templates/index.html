@@ -208,7 +208,13 @@
     {% endif %}
 
     {% if features %}
+    <div class="container text-center">
+        <div class="row">
+          <div class="col-lg-10 mx-auto text-center">
     <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+    </div>
+    </div>
 
     <!-- import plugin script -->   
     <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
