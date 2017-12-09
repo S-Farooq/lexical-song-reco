@@ -241,11 +241,11 @@
 			                  "{{item}}",
 			              {% endfor %}],
 			   datasets : [
-			   {% for song in user_song_values %}
-				      {		label: '{{ song[0] }}',
-				      		fillColor: background_colors, 
-			                strokeColor: background_colors,
-				         data : [{% for item in song[1:] %}
+			   {% for s in range(len(user_song_values)) %}
+				      {		label: '{{ user_song_values[s][0] }}',
+				      		fillColor: background_colors[{{ s }}], 
+			                strokeColor: background_color[{{ s }}],
+				         data : [{% for item in user_song_values[s] %}
 				                      {{item}},
 				                    {% endfor %}],
 				         borderWidth: 3

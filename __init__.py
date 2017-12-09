@@ -272,10 +272,10 @@ def main():
 
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
 
-            full_reco_df = full_reco_df.head(3)
+            full_reco_df = full_reco_df.head(7)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
-            
+
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
@@ -326,7 +326,7 @@ def main():
             
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
 
-            full_reco_df = full_reco_df.head(3)
+            full_reco_df = full_reco_df.head(7)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
 
