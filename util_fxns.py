@@ -470,26 +470,26 @@ if __name__ == '__main__':
     if len(sys.argv)>1 and sys.argv[1]=='dataonly':
         data_only = True
 
-    tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_corpuswpop2.p"
-    lc='/var/www/FlaskApp/FlaskApp/lyric_corpuswpop2.p'
-    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagetest.csv"
+    tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_moresongs.p"
+    lc='/var/www/FlaskApp/FlaskApp/lyric_moresongs.p'
+    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage_moresongs.csv"
     artists = ["the national", "Editors", "chvrches", "william fitzsimmons", "vienna teng",
         "oh wonder",'the shins','the killers','the strokes','bleachers',
         "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence + the machine", "dawud wharnsby",
         "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
     
     if not data_only:
-        lyric_corpus = search_musix_corpus(artists,pages=1,corpus_file=lc)
+        lyric_corpus = search_musix_corpus(artists,pages=4,corpus_file=lc)
         tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
         all_data = get_corpus_dataframe(tlc, output_file=ds)
     else:
         ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
         all_data = pd.read_csv(ds, encoding="utf-8")
 
-    test_lyric = "Test text to get the x_names field lol what ever"
-    tokenized_song = tokenize_song(test_lyric)
-    dummy_var, x_names = get_song_data(tokenized_song)
+        test_lyric = "Test text to get the x_names field lol what ever"
+        tokenized_song = tokenize_song(test_lyric)
+        dummy_var, x_names = get_song_data(tokenized_song)
 
-    X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.3)
-    reco_df, full_reco_df = get_euc_dist(X_test,X_train,y_test,y_train,x_names,n_top=5)
-    print full_reco_df.head()
+        X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.3)
+        reco_df, full_reco_df = get_euc_dist(X_test,X_train,y_test,y_train,x_names,n_top=5)
+        print full_reco_df.head()
