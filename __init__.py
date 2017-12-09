@@ -213,18 +213,21 @@ def my_form():
         colors=session['colors']
         reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
         to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
+        callback_playlist=session['callback_playlist']
         session.clear()
         if 'callback_playlist' in session:
             return render_template('index.html', scroll="recos",
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=to_show_reco,  display="block",corpus_dict=corpus_dict,
-                user_song_values=full_reco_df,features=x_names,colors=colors
+                user_song_values=full_reco_df,features=x_names,colors=colors,
+                callback_playlist=callback_playlist
                 )
         else:
             return render_template('index.html', scroll="recos",
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=to_show_reco,  display="block", corpus_dict=corpus_dict,
-                user_song_values=full_reco_df,features=x_names,colors=colors)
+                user_song_values=full_reco_df,features=x_names,colors=colors,
+                callback_playlist=callback_playlist)
     else:
         return render_template('index.html', corpus_dict=corpus_dict)
 

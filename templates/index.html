@@ -166,7 +166,7 @@
         
         <div class="row">
       	<div class="col-lg-10 mx-auto text-center">
-      	{% if not session.callback_playlist %}
+      	{% if callback_playlist %}
       	<form method="POST">
       	
 		  <div class="form-row align-items-center">
@@ -198,7 +198,7 @@
 		</form>
 		{% else %}
 		<div class="col-lg-10 mx-auto text-center" id="spotify_show">
-			<h4> Your Spotify Playlist has been created:</h4>{{ session.callback_playlist }}<br>
+			<h4> Your Spotify Playlist has been created:</h4>{{ callback_playlist }}<br>
 			<h5> Search another song!</h5>
 		</div>
 		{% endif %}
@@ -222,9 +222,14 @@
     	<div class="row">
       		<div class="col-lg-12 mx-auto text-center">
 	
-    			<canvas id="radar-chart" width="600" height="400"></canvas>
+    			<canvas id="radar-chart" width="600" height="600"></canvas>
     		</div>
 		</div>
+    </section>
+
+    <section class="content-section">
+    
+    <div class="container text-center">
 		<div class="row">
       		<div class="col-lg-12 mx-auto text-center">
     			<h4 class="mb-4">Comparing all lexical features:</h4>
@@ -232,7 +237,7 @@
     	</div>
     	<div class="row">
       		<div class="col-lg-12 mx-auto text-center">
-					<canvas id="myChart" width="600" height="200"></canvas>
+					<canvas id="myChart" width="600" height="400"></canvas>
 			</div>
 		</div>
     </div>
