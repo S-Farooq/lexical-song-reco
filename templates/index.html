@@ -149,8 +149,10 @@
 	<script>
 		{% if session.callback_playlist %}
 	    document.getElementById('spotify_show').scrollIntoView();
+	    document.location.hash = '#' + 'spotify_show';
 	    {% else %}
 	    document.getElementById('{{ scroll }}').scrollIntoView();
+	    document.location.hash = '#' + '{{ scroll }}';
 		{% endif %}
 	</script>
 	{% endif %}
