@@ -208,17 +208,23 @@ def my_form():
         reco_df =pd.read_json(session['reco_df'], orient='split')
         usong =session['usong']
         uartist =session['uartist']
-        reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+        full_reco_df=session['user_song_values']
+        x_names=session['features']
+        colors=session['colors']
+        reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
         to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
-
+        session.clear()
         if 'callback_playlist' in session:
             return render_template('index.html', scroll="recos",
                 song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df=to_show_reco,  display="block",corpus_dict=corpus_dict)
+                reco_df=to_show_reco,  display="block",corpus_dict=corpus_dict,
+                user_song_values=full_reco_df,features=x_names,colors=colors
+                )
         else:
             return render_template('index.html', scroll="recos",
                 song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df=to_show_reco,  display="block", corpus_dict=corpus_dict)
+                reco_df=to_show_reco,  display="block", corpus_dict=corpus_dict,
+                user_song_values=full_reco_df,features=x_names,colors=colors)
     else:
         return render_template('index.html', corpus_dict=corpus_dict)
 
@@ -270,7 +276,7 @@ def main():
             
             
 
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
@@ -280,6 +286,10 @@ def main():
             colors=[]
             for i in range(num_to_graph):
                 colors.append('#%02X%02X%02X' % (r(),r(),r()))
+
+            session['user_song_values']=full_reco_df
+            session['features']=x_names
+            session['colors']=colors
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
@@ -328,7 +338,7 @@ def main():
             session['reco_df']=reco_df.to_json(orient='split')
             
             
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=10)
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
@@ -338,6 +348,10 @@ def main():
             colors=[]
             for i in range(num_to_graph):
                 colors.append('#%02X%02X%02X' % (r(),r(),r()))
+
+            session['user_song_values']=full_reco_df
+            session['features']=x_names
+            session['colors']=colors
 
             # user_scaled_data = user_scaled_data[0,:].tolist()
             return render_template('index.html', scroll="recos", 
