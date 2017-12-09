@@ -245,7 +245,7 @@
 				      {		label: '{{ user_song_values[s][0] }}',
 				      		fillColor: background_colors[{{ s }}], 
 			                strokeColor: background_color[{{ s }}],
-				         data : [{% for item in user_song_values[s] %}
+				         data : [{% for item in user_song_values[s][1:] %}
 				                      {{item}},
 				                    {% endfor %}],
 				         borderWidth: 3
