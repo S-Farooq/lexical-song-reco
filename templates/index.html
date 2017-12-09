@@ -240,10 +240,10 @@
 			   labels : [{% for item in features %}
 			                  "{{item}}",
 			              {% endfor %}],
-			   borderColor: getRandomColor(),
 			   datasets : [
 			   {% for s in range(0,user_song_values|length) %}
 				      {		label: '{{ user_song_values[s][0] }}',
+				      		borderColor: '{{ colors[s] }}',
 				         data : [{% for item in user_song_values[s][1:] %}
 				                      {{item}},
 				                    {% endfor %}],
