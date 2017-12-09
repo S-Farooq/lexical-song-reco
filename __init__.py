@@ -313,7 +313,7 @@ def main():
             X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
             user_scaled_data= scaler.transform(user_data)
             
-            reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,x_names,n_top=25)
+            reco_df, full_reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,x_names,n_top=25)
 
             session['reco_df']=reco_df.to_json(orient='split')
             
