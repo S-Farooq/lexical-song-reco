@@ -287,6 +287,7 @@ def main():
             for i in range(num_to_graph):
                 colors.append('%02X%02X%02X' % (r(),r(),r()))
 
+            colors.append('696969')
             session['user_song_values']=full_reco_df
             session['features']=x_names
             session['colors']=colors
@@ -349,6 +350,7 @@ def main():
             for i in range(num_to_graph):
                 colors.append('%02X%02X%02X' % (r(),r(),r()))
 
+            colors.append('696969')
             session['user_song_values']=full_reco_df
             session['features']=x_names
             session['colors']=colors

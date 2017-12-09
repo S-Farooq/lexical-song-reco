@@ -191,14 +191,14 @@
 		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="playlist">Create Spotify Playlist</button>
 		    </div>-->
 		    <div class="col-md-12">
-		      <button type="submit" class="btn btn-primary js-scroll-trigger btn-xl" name="btn" value="playlist">Create A Spotify Playlist</button>
+		      <button type="submit" class="btn btn-primary js-scroll-trigger btn-xl" name="btn" value="playlist">Create A Spotify Playlist! (of 25 Songs)</button>
 		    </div>
 
 		  </div>
 		</form>
 		{% else %}
 		<div class="col-lg-10 mx-auto text-center" id="spotify_show">
-			<h4> Your Spotify Playlist has been created for this set of reccomendations:</h4>{{ session.callback_playlist }}<br>
+			<h4> Your Spotify Playlist has been created:</h4>{{ session.callback_playlist }}<br>
 			<h5> Search another song!</h5>
 		</div>
 		{% endif %}
@@ -211,9 +211,9 @@
 
     {% if features %}
     <section class="content-section">
-    <h1>GRAPHS</h1>
-    <div class="container text-center">
     
+    <div class="container text-center">
+    	<h1>GRAPHS</h1>
     	<div class="row">
       		<div class="col-lg-12 mx-auto text-center">
     			<h4 class="mb-4">Comparing word count and specific lexical features:</h4>
@@ -222,7 +222,7 @@
     	<div class="row">
       		<div class="col-lg-12 mx-auto text-center">
 	
-    			<canvas id="radar-chart" width="800" height="600"></canvas>
+    			<canvas id="radar-chart" width="600" height="400"></canvas>
     		</div>
 		</div>
 		<div class="row">
@@ -232,7 +232,7 @@
     	</div>
     	<div class="row">
       		<div class="col-lg-12 mx-auto text-center">
-					<canvas id="myChart" width="600" height="300"></canvas>
+					<canvas id="myChart" width="600" height="200"></canvas>
 			</div>
 		</div>
     </div>
