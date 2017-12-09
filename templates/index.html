@@ -220,7 +220,14 @@
     <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
 		<script>
 		   
-
+			function getRandomColor() {
+			    var letters = '0123456789ABCDEF'.split('');
+			    var color = '#';
+			    for (var i = 0; i < 6; i++ ) {
+			        color += letters[Math.floor(Math.random() * 16)];
+			    }
+			    return color;
+			}
 		   // bar chart data
 		   var data = {
 			   labels : [{% for item in features %}
@@ -229,6 +236,7 @@
 			   datasets : [
 			   {% for song in user_song_values %}
 				      {		label: '{{ song[0] }}',
+				      strokeColor : getRandomColor(),
 				         data : [{% for item in song[1:] %}
 				                      {{item}},
 				                    {% endfor %}],
