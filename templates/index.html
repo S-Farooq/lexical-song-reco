@@ -98,7 +98,8 @@
 			    <textarea name="custom_text" maxlength="500" class="form-control" id="custom_text" rows="4" placeholder="Please enter 100 to 500 characters."></textarea>
 			 
 			 </div>
-
+			 </div><br>
+			<div class="form-row align-items-center">
 			 <div class="col-md-6">
 		    <div class="input-group mb-2 mb-sm-0">
 		      <div class="input-group-addon">My Playlists</div>
@@ -205,6 +206,43 @@
       </div>
     </section>
     {% endif %}
+
+    {% if features %}
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <!-- import plugin script -->   
+    <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
+		<script>
+		   
+
+		   // bar chart data
+		   var data = {
+			   labels : [{% for item in features %}
+			                  "{{item}}",
+			              {% endfor %}],
+			   datasets : [
+				      {		label: '{{ song_name }} - {{ artist_name }}',
+				            fillColor: "rgba(151,187,205,0.2)",
+				            strokeColor: "rgba(151,187,205,1)",
+				            pointColor: "rgba(151,187,205,1)",
+				         data : [{% for item in user_song_values %}
+				                      {{item}},
+				                    {% endfor %}],
+				         borderWidth: 3
+				      }
+			      ]
+		   }
+
+		   var ctx = document.getElementById("myChart").getContext("2d");
+
+		   var myLineChart = new Chart(ctx, {
+			    type: 'line',
+			    data: data
+			});
+		 
+		 
+		</script>
+	{% endif %}
 
    <!-- Footer -->
     <footer class="footer text-center">
