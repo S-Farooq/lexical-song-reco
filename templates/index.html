@@ -208,13 +208,15 @@
     {% endif %}
 
     {% if features %}
+    <section class="callout">
     <div class="container text-center">
         <div class="row">
-          <div class="col-lg-12 mx-auto text-center">
-    <canvas id="myChart" width="600" height="400"></canvas>
+          	<div class="col-lg-12 mx-auto text-center">
+    				<canvas id="myChart" width="600" height="400"></canvas>
+    		</div>
+    	</div>
     </div>
-    </div>
-    </div>
+    </section>
 
     <!-- import plugin script -->   
     <script src="{{ url_for('static', filename='js/Chart.min.js') }}"></script>
@@ -231,7 +233,10 @@
 			   datasets : [
 			   {% for song in user_song_values %}
 				      {		label: '{{ song[0] }}',
-				      strokeColor : randomColorGenerator(),
+				      		fillColor: randomColorGenerator(), 
+			                strokeColor: randomColorGenerator(), 
+			                highlightFill: randomColorGenerator(),
+			                highlightStroke: randomColorGenerator(),
 				         data : [{% for item in song[1:] %}
 				                      {{item}},
 				                    {% endfor %}],
