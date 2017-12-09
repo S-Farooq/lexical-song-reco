@@ -285,7 +285,7 @@ def main():
             r = lambda: random.randint(0,255)
             colors=[]
             for i in range(num_to_graph):
-                colors.append('#%02X%02X%02X' % (r(),r(),r()))
+                colors.append('%02X%02X%02X' % (r(),r(),r()))
 
             session['user_song_values']=full_reco_df
             session['features']=x_names
@@ -347,7 +347,7 @@ def main():
             r = lambda: random.randint(0,255)
             colors=[]
             for i in range(num_to_graph):
-                colors.append('#%02X%02X%02X' % (r(),r(),r()))
+                colors.append('%02X%02X%02X' % (r(),r(),r()))
 
             session['user_song_values']=full_reco_df
             session['features']=x_names
