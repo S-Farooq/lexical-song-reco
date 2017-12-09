@@ -210,12 +210,17 @@
     {% if features %}
     <section class="content-section text-white">
     <div class="container text-center">
-    <h4 class="mb-4">Comparing lexical features of top 7 songs closest to your selection:</h4>
-        <div class="row">
-          	<div class="col-lg-12 mx-auto text-center">
-    				<canvas id="myChart" width="600" height="400"></canvas>
-    		</div>
+    
+    	<div class="row">
+      		<div class="col-lg-12 mx-auto text-center">
+    			<h4 class="mb-4">Comparing lexical features of top 7 songs closest to your 	selection:</h4>
+			</div>
     	</div>
+    	<div class="row">
+      		<div class="col-lg-12 mx-auto text-center">
+					<canvas id="myChart" width="600" height="400"></canvas>
+			</div>
+		</div>
     </div>
     </section>
 
@@ -274,7 +279,7 @@
 			        },
 			        legend: {
 			        	display: true,
-			        	position: 'right'
+			        	position: 'top'
 			        }
 			    }
 			});
