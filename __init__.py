@@ -270,11 +270,11 @@ def main():
             
             
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
-            user_data = user_data[0,:]
+            user_scaled_data = user_scaled_data[0,:]
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
                 reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
-                user_song_values=user_data,features=x_names)
+                user_song_values=user_scaled_data,features=x_names)
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
