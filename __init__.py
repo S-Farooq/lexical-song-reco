@@ -271,14 +271,14 @@ def main():
             
 
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
-
-            full_reco_df = full_reco_df.head(7)
+            num_to_graph=7
+            full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
             import random
             r = lambda: random.randint(0,255)
             colors=[]
-            for i in range(len(full_reco_df.index)):
+            for i in range(num_to_graph):
                 colors.append('#%02X%02X%02X' % (r(),r(),r()))
             return render_template('index.html', scroll="recos", 
                 song_name=usong.upper(), artist_name=uartist.upper(),
@@ -329,14 +329,14 @@ def main():
             
             
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
-
-            full_reco_df = full_reco_df.head(7)
+            num_to_graph=7
+            full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
             import random
             r = lambda: random.randint(0,255)
             colors=[]
-            for i in range(len(full_reco_df.index)):
+            for i in range(num_to_graph):
                 colors.append('#%02X%02X%02X' % (r(),r(),r()))
 
             # user_scaled_data = user_scaled_data[0,:].tolist()
