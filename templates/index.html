@@ -323,7 +323,7 @@
 			   {% for s in range(0,user_song_values|length) %}
 				      {		label: '{{ user_song_values[s][0].decode("utf-8") }}',
 				      		fill: true,
-				      		backgroundColor: 'rgb({{ colors[s] }},0.2)',
+				      		backgroundColor: 'rgba({{ colors[s] }},0.2)',
 				      		borderColor: 'rgb({{ colors[s] }})',
 				      		pointBorderColor: '#fff',
 				         data : [{% for item in user_song_values[s][1:8] %}
