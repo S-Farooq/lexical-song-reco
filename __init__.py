@@ -13,9 +13,37 @@ import json
 import base64
 import urllib, difflib
 
+class Logger(object):
+    def __init__(self, script_name):
+        now = datetime.datetime.now()
+        str_time = now.strftime("%m%d%Y_%HH%MM")
+        self.logname = "{script_name}_logfile_{currtime}.log".format(script_name=script_name, currtime=str_time)
+        self.terminal = sys.stdout
+        self.log = open(self.logname, "a")
+
+    def get_log_name(self):
+        return self.logname
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)  
+
+    def flush(self):
+        #this flush method is needed for python 3 compatibility.
+        #this handles the flush command by doing nothing.
+        #you might want to specify some extra behavior here.
+        pass
+
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response. 
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+log_dir = "logs"
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+log_inst = Logger(script_name="{dir_path}/{log_dir}/LSR_".format(dir_path=dir_path,log_dir=log_dir))
+sys.stdout = log_inst
+log_name = log_inst.get_log_name()
 
 app = Flask(__name__)
 app.secret_key = '5f535ebef7444444gb42d58590161e7bfcf653'
@@ -190,27 +218,27 @@ def callback():
                     if t['artists'][0]['name'].upper()==closest_artist:
                         if t['uri'] not in uri_list:
                             uri_list.append(t['uri'])
+                            print t['uri'], str(row['Artist']).upper(), artist_choices, str(row['My Song']).lower()
                         break
             # else:
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
             continue
 
-    session['callback_playlist'] = "<p>Error with the uris:{}</p>".format(','.join(uri_list))
-    return redirect(url_for('.my_form')) 
-    #ADD list of uris to playlist (add tracks)
-    # try:
-    add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
-    track_data = {
-        "uris": uri_list,
-    }
-    post_request = requests.post(add_track_api_endpoint, data=json.dumps(track_data), headers=post_header)
-    response_data = json.loads(post_request.text)
-    # except:
-    #     session['callback_playlist'] = "<p>Error with the uris:{}</p>".format(''.join(uri_list))
-    #     return redirect(url_for('.my_form'))       
     
-
+    #ADD list of uris to playlist (add tracks)
+    try:
+        add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
+        track_data = {
+            "uris": uri_list,
+        }
+        post_request = requests.post(add_track_api_endpoint, data=json.dumps(track_data), headers=post_header)
+        response_data = json.loads(post_request.text)
+    except:
+        session['callback_playlist'] = "<p>Error with the uris:{}</p>".format(''.join(uri_list))
+        return redirect(url_for('.my_form'))       
+    
+    print "AFTER ADDING TRACKS.."
     # Get user playlist data
     # playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
     # playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
