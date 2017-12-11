@@ -227,7 +227,10 @@
 		</form>
 		{% else %}
 		<div class="col-lg-10 mx-auto text-center" id="spotify_show">
-			<h4> Your Spotify Playlist has been created:</h4>{{ callback_playlist }}<br>
+			<h4> Your Spotify Playlist has been created:</h4>
+			<a href="{{ callback_playlist }}" target="_blank">
+			<h3>Your New Lex-Recos Playlist</h3>
+			</a><br>
 			<h5> Search another song!</h5>
 		</div>
 		{% endif %}
