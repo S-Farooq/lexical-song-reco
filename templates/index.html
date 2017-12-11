@@ -113,7 +113,7 @@
 			  </div>
 			</div>
 			 <div class="col-md-6">
-		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="search_custom">Submit</button>
+		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="search_custom" onclick="showLoad();">Submit</button>
 		      </div>
 		   </div>
 		</form>
@@ -193,7 +193,7 @@
 		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="playlist">Create Spotify Playlist</button>
 		    </div>-->
 		    <div class="col-md-12">
-		      <button type="submit" class="btn btn-primary js-scroll-trigger btn-xl" name="btn" value="playlist">Create A Spotify Playlist! (of 25 Songs)</button>
+		      <button type="submit" class="btn btn-primary js-scroll-trigger btn-xl" name="btn" value="playlist" onclick="showLoad();">Create A Spotify Playlist! (of 25 Songs)</button>
 		    </div>
 
 		  </div>
@@ -379,12 +379,7 @@
     <script>
 
 	  // Show full page LoadingOverlay
-		$.LoadingOverlay("show");
-
-		// Hide it after 3 seconds
-		setTimeout(function(){
-		    $.LoadingOverlay("hide");
-		}, 3000);
+		
 	  function showLoad() {
 		  // Show full page LoadingOverlay
 			$.LoadingOverlay("show");
