@@ -11,17 +11,6 @@
 
 	  gtag('config', 'UA-110962916-1');
 
-	  // Show full page LoadingOverlay
-		$.LoadingOverlay("show");
-
-		// Hide it after 3 seconds
-		setTimeout(function(){
-		    $.LoadingOverlay("hide");
-		}, 3000);
-	  function showLoad() {
-		  // Show full page LoadingOverlay
-			$.LoadingOverlay("show");
-		};
 	</script>
 
     <meta charset="utf-8">
@@ -43,7 +32,7 @@
     <link href="{{ url_for('static', filename="css/stylish-portfolio.css") }}" rel="stylesheet">
 
   </head>
-  
+
   <body id="page-top">
     
 	<!-- <div class="loader" style="display:none;"></div> -->
@@ -376,7 +365,6 @@
 
     <!-- Bootstrap core JavaScript -->
     <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/loadingoverlay.min') }}"></script>
     
     <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
@@ -385,6 +373,23 @@
 
     <!-- Custom scripts for this template -->
     <script src='{{ url_for("static", filename="js/stylish-portfolio.min.js") }}'></script>
+    <script src="{{ url_for('static', filename='js/loadingoverlay.min.js') }}"></script>
+    
+
+    <script>
+
+	  // Show full page LoadingOverlay
+		$.LoadingOverlay("show");
+
+		// Hide it after 3 seconds
+		setTimeout(function(){
+		    $.LoadingOverlay("hide");
+		}, 3000);
+	  function showLoad() {
+		  // Show full page LoadingOverlay
+			$.LoadingOverlay("show");
+		};
+		</script>
 
   </body>
 
