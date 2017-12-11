@@ -37,13 +37,9 @@ class Logger(object):
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response. 
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-log_dir = "logs"
-if not os.path.exists(log_dir):
-    os.makedirs(log_dir)
-log_inst = Logger(script_name="{dir_path}/{log_dir}/LSR_".format(dir_path=dir_path,log_dir=log_dir))
+log_dir = "/var/www/FlaskApp/FlaskApp/logs"
+log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
 sys.stdout = log_inst
-log_name = log_inst.get_log_name()
 
 app = Flask(__name__)
 app.secret_key = '5f535ebef7444444gb42d58590161e7bfcf653'
