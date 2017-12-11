@@ -171,7 +171,7 @@
     <section class="content-section bg-light" id="recos" style="display:{{ display }}">
     {% if scroll %}
 	<script>
-		{% if session.callback_playlist %}
+		{% if callback_playlist %}
 	    document.getElementById('spotify_show').scrollIntoView();
 	    document.location.hash = '#' + 'spotify_show';
 	    {% else %}
