@@ -171,7 +171,7 @@ def callback():
         try:
             song_to_search=re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())
             song_to_search=re.sub(r'\s+', '+', song_to_search)
-            track_search_api_endpoint = "{}/search?q={}&type=track".format(SPOTIFY_API_URL,song_to_search)
+            track_search_api_endpoint = "{}/search?q={}&type=track&market=US".format(SPOTIFY_API_URL,song_to_search)
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
             if len(search_data['tracks']['items'])==0:
@@ -204,7 +204,7 @@ def callback():
         post_request = requests.post(add_track_api_endpoint, data=json.dumps(track_data), headers=post_header)
         response_data = json.loads(post_request.text)
     except:
-        session['callback_playlist'] = response_data + str(track_data['uris'])
+        session['callback_playlist'] = post_request.text + str(track_data['uris'])
         return redirect(url_for('.my_form'))       
     
 
