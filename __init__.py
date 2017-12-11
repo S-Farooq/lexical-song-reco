@@ -112,8 +112,6 @@ def auth_spot():
 
 @app.route("/callback/q")
 def callback():
-    session['callback_playlist'] = "just test"
-    return redirect(url_for('.my_form'))
     # Auth Step 4: Requests refresh and access tokens
     auth_token = request.args['code']
     code_payload = {
