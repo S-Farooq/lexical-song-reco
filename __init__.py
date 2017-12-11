@@ -193,12 +193,15 @@ def callback():
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
                 for t in search_data['tracks']['items']:
+                    uri = t['uri']
                     if t['artists'][0]['name'].upper()==closest_artist:
-                        if t['uri'] and t['uri'] not in uri_list and not t['uri']='':
+                        if uri not in uri_list:
                             uri_list.append(t['uri'])
                             thefile.write(t['uri']+"\n")
                             print t['uri']
                         break
+                    thefile.write("not found..something wrong\n")
+            thefile.write("no close artist....\n")
             # else:
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
