@@ -160,11 +160,12 @@ def callback():
         session['callback_playlist'] = response_data
         return redirect(url_for('.my_form'))
     
-    to_display_amount=25
+    to_display_amount=10
     reco_df =pd.read_json(session['reco_df'], orient='split')
+    reco_df.to_csv("blah.csv")
     to_display = []
     uri_list=[]
-    thefile = open('/var/www/FlaskApp/FlaskApp/log.txt', 'a')
+    thefile = open('/var/www/FlaskApp/FlaskApp/logs.txt', 'w')
     for index, row in reco_df.iterrows():
         if to_display_amount==0:
             break
