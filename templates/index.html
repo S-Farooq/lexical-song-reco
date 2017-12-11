@@ -12,6 +12,18 @@
 	  gtag('config', 'UA-110962916-1');
 
 	</script>
+	<script src="{{ url_for('static', filename='js/loadingoverlay.min.js') }}"></script>
+    
+
+    <script>
+
+	  // Show full page LoadingOverlay
+		
+	  function showLoad() {
+		  // Show full page LoadingOverlay
+			$.LoadingOverlay("show");
+		};
+		</script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -397,18 +409,7 @@
 
     <!-- Custom scripts for this template -->
     <script src='{{ url_for("static", filename="js/stylish-portfolio.min.js") }}'></script>
-    <script src="{{ url_for('static', filename='js/loadingoverlay.min.js') }}"></script>
     
-
-    <script>
-
-	  // Show full page LoadingOverlay
-		
-	  function showLoad() {
-		  // Show full page LoadingOverlay
-			$.LoadingOverlay("show");
-		};
-		</script>
 
   </body>
 
