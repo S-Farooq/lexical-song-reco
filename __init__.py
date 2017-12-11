@@ -11,7 +11,7 @@ sys.setdefaultencoding('utf-8')
 
 import json
 import base64
-import urllib, difflib
+import urllib, difflib, os
 
 class Logger(object):
     def __init__(self, script_name):
