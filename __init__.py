@@ -160,6 +160,8 @@ def callback():
         session['callback_playlist'] = response_data
         return redirect(url_for('.my_form'))
     
+    session['callback_playlist'] = response_data
+    return redirect(url_for('.my_form'))
     to_display_amount=5
     reco_df =pd.read_json(session['reco_df'], orient='split')
     reco_df.to_csv("/var/www/FlaskApp/FlaskApp/logs/blah.csv")
