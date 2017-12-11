@@ -52,6 +52,7 @@ auth_query_parameters = {
 
 corpus_dict = {
         'Top songs by my artists': "dataframe_storagewpop2",
+        'All songs by my artists': "dataframe_storage_moresongs"
     }
 
 def get_feature_names(x_names):
