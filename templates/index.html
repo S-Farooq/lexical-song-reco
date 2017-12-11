@@ -277,7 +277,7 @@
 			   datasets : [
 			   {% for s in range(0,user_song_values|length) %}
 				      {		label: '{{ user_song_values[s][0].decode("utf-8") }}',
-				      		borderColor: '#{{ colors[s] }}',
+				      		borderColor: 'rgb({{ colors[s] }})',
 				         data : [{% for item in user_song_values[s][1:] %}
 				                      {{item}},
 				                    {% endfor %}],
@@ -323,8 +323,8 @@
 			   {% for s in range(0,user_song_values|length) %}
 				      {		label: '{{ user_song_values[s][0].decode("utf-8") }}',
 				      		fill: true,
-				      		backgroundColor: '#33{{ colors[s] }}',
-				      		borderColor: '#33{{ colors[s] }}',
+				      		backgroundColor: 'rgb({{ colors[s] }},0.2)',
+				      		borderColor: 'rgb({{ colors[s] }})',
 				      		pointBorderColor: '#fff',
 				         data : [{% for item in user_song_values[s][1:8] %}
 				                      {{item}},
