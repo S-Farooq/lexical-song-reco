@@ -112,6 +112,8 @@ def auth_spot():
 
 @app.route("/callback/q")
 def callback():
+    session['callback_playlist'] = "just testting"
+    return redirect(url_for('.my_form'))
     # Auth Step 4: Requests refresh and access tokens
     auth_token = request.args['code']
     code_payload = {
@@ -160,8 +162,7 @@ def callback():
         session['callback_playlist'] = response_data
         return redirect(url_for('.my_form'))
     
-    session['callback_playlist'] = response_data
-    return redirect(url_for('.my_form'))
+
     to_display_amount=5
     reco_df =pd.read_json(session['reco_df'], orient='split')
     reco_df.to_csv("/var/www/FlaskApp/FlaskApp/logs/blah.csv")
@@ -247,6 +248,21 @@ def callback():
     #         song_name=usong.upper(), artist_name=uartist.upper(),
     #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
     # return render_template("index.html", reco_df=display_arr)
+# def renderer_full_state():
+#     reco_df =pd.read_json(session['reco_df'], orient='split')
+#     usong =session['usong']
+#     uartist =session['uartist']
+#     full_reco_df=session['user_song_values']
+#     x_names=session['features']
+#     colors=session['colors']
+#     reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
+#     to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
+#     return render_template('index.html', scroll="recos", 
+#         song_name=usong.upper(), artist_name=uartist.upper(),
+#         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),
+#         display="block",corpus_dict=corpus_dict,
+#         user_song_values=full_reco_df,features=session['features'],colors=colors)    
+#     callback_playlist=session['callback_playlist']
 
 @app.route('/')
 def my_form():
@@ -255,7 +271,7 @@ def my_form():
             reco_df =pd.read_json(session['reco_df'], orient='split')
             usong =session['usong']
             uartist =session['uartist']
-            full_reco_df=session['user_song_values']
+            full_reco_df=pd.read_json(session['user_song_values'], orient='split')
             x_names=session['features']
             colors=session['colors']
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
@@ -343,7 +359,7 @@ def main():
                 colors.append('{}, {}, {}'.format(r(),r(),r()))
 
             colors.append('{}, {}, {}'.format(105,105,105))
-            session['user_song_values']=full_reco_df
+            session['user_song_values']=full_reco_df.to_json(orient='split')
 
             session['features']=get_feature_names(x_names)
             session['colors']=colors
@@ -407,9 +423,8 @@ def main():
                 colors.append('{}, {}, {}'.format(r(),r(),r()))
 
             colors.append('{}, {}, {}'.format(105,105,105))
+            session['user_song_values']=full_reco_df.to_json(orient='split')
 
-            # colors.append('696969')
-            session['user_song_values']=full_reco_df
             session['features']=get_feature_names(x_names)
             session['colors']=colors
 
