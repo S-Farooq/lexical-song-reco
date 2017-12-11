@@ -206,7 +206,7 @@ def callback():
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
             print str(row['Artist']).upper(), str(row['My Song']).lower()
-            print ''.join(uri_list)
+            
             # to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
@@ -214,7 +214,7 @@ def callback():
                     if t['artists'][0]['name'].upper()==closest_artist:
                         if t['uri'] not in uri_list:
                             uri_list.append(t['uri'])
-                            
+                            print t['uri']
                         break
             # else:
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
