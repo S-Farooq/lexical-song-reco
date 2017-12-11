@@ -209,7 +209,6 @@ def callback():
         except:
             continue
     thefile.write('\n'.join(uri_list))
-    thefile.close()
     #ADD list of uris to playlist (add tracks)
     try:
         add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
@@ -223,6 +222,9 @@ def callback():
         return redirect(url_for('.my_form'))       
     
     print "AFTER ADDING TRACKS.."
+    thefile.write("made it after adding tracks\n")
+    thefile.write(str(playlist_url)+" - the url\n")
+    thefile.close()
     # Get user playlist data
     # playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
     # playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
@@ -251,6 +253,8 @@ def callback():
 def my_form():
     thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call_ea.txt', 'w')
     thefile.write("made it to callbackear.")
+    if 'reco_df' in session:
+        thefile.write(session['usong'])
     thefile.close()
     try:
         if 'callback_playlist' in session:
