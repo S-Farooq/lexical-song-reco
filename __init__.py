@@ -253,7 +253,7 @@ def callback():
 def my_form():
     thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call_ea.txt', 'w')
     thefile.write("made it to callbackear.")
-    if 'reco_df' in session:
+    if 'callback_playlist' in session:
         thefile.write(session['usong'])
     thefile.close()
     try:
