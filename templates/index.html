@@ -11,8 +11,16 @@
 
 	  gtag('config', 'UA-110962916-1');
 
+	  // Show full page LoadingOverlay
+		$.LoadingOverlay("show");
+
+		// Hide it after 3 seconds
+		setTimeout(function(){
+		    $.LoadingOverlay("hide");
+		}, 3000);
 	  function showLoad() {
-		  document.getElementById("overlay").style.display = "block";
+		  // Show full page LoadingOverlay
+			$.LoadingOverlay("show");
 		};
 	</script>
 
@@ -35,10 +43,7 @@
     <link href="{{ url_for('static', filename="css/stylish-portfolio.css") }}" rel="stylesheet">
 
   </head>
-<div id="overlay">
-	    <div id="loading-img">blah
-	    </div>
-	</div>
+  
   <body id="page-top">
     
 	<!-- <div class="loader" style="display:none;"></div> -->
@@ -371,13 +376,15 @@
 
     <!-- Bootstrap core JavaScript -->
     <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/loadingoverlay.min') }}"></script>
+    
     <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="{{ url_for('static', filename="vendor/jquery-easing/jquery.easing.min.js") }}""></script>
+    <script src="{{ url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js') }}""></script>
 
     <!-- Custom scripts for this template -->
-    <script src="{{ url_for('static', filename="js/stylish-portfolio.min.js") }}"></script>
+    <script src='{{ url_for("static", filename="js/stylish-portfolio.min.js") }}'></script>
 
   </body>
 
