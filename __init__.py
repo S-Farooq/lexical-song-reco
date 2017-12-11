@@ -37,9 +37,7 @@ class Logger(object):
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response. 
 
-log_dir = "/var/www/FlaskApp/FlaskApp/logs"
-log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
-sys.stdout = log_inst
+
 
 app = Flask(__name__)
 app.secret_key = '5f535ebef7444444gb42d58590161e7bfcf653'
@@ -298,6 +296,9 @@ def my_form():
 
 @app.route('/', methods=['POST', 'GET'])
 def main():
+    log_dir = "/var/www/FlaskApp/FlaskApp/logs"
+    log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
+    sys.stdout = log_inst
     if request.form['btn'] == 'search':
         try:
             session.clear()
@@ -343,7 +344,7 @@ def main():
             
             
 
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
@@ -407,7 +408,7 @@ def main():
             session['reco_df']=reco_df.to_json(orient='split')
             
             
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=10)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
