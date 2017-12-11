@@ -324,7 +324,7 @@ def main():
             for i in range(num_to_graph):
                 colors.append('{}, {}, {}'.format(r(),r(),r()))
 
-            colors.append('696969')
+            colors.append('{}, {}, {}'.format(105,105,105))
             session['user_song_values']=full_reco_df
 
             session['features']=get_feature_names(x_names)
@@ -388,7 +388,9 @@ def main():
             for i in range(num_to_graph):
                 colors.append('{}, {}, {}'.format(r(),r(),r()))
 
-            colors.append('696969')
+            colors.append('{}, {}, {}'.format(105,105,105))
+
+            # colors.append('696969')
             session['user_song_values']=full_reco_df
             session['features']=get_feature_names(x_names)
             session['colors']=colors

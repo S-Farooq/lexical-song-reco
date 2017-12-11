@@ -10,6 +10,10 @@
 	  gtag('js', new Date());
 
 	  gtag('config', 'UA-110962916-1');
+
+	  function showLoad() {
+		  document.getElementById("overlay").style.display = "block";
+		};
 	</script>
 
     <meta charset="utf-8">
@@ -33,7 +37,10 @@
   </head>
 
   <body id="page-top">
-    
+    <div id="overlay">
+	    <div id="loading-img"></div>
+	</div>
+	<!-- <div class="loader" style="display:none;"></div> -->
     <!-- Header -->
     <header class="masthead d-flex">
       <div class="container text-center my-auto">
@@ -82,7 +89,7 @@
 			</div>
 			
 		    <div class="col-md-2">
-		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="search">Submit</button>
+		      <button type="submit" class="btn btn-primary js-scroll-trigger" name="btn" value="search" onclick="showLoad();">Submit</button>
 		    </div>
 		  </div>
 		</form>
