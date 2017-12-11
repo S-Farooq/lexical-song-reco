@@ -201,7 +201,8 @@ def callback():
                             print t['uri']
                         break
                     thefile.write("not found..something wrong\n")
-            thefile.write("no close artist....\n")
+            else:
+                thefile.write("no close artist....\n")
             # else:
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
@@ -258,7 +259,7 @@ def my_form():
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
             to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
             callback_playlist=session['callback_playlist']
-            session.clear()
+            # session.clear()
             if 'callback_playlist' in session:
                 return render_template('index.html', scroll="recos",
                     song_name=usong.upper(), artist_name=uartist.upper(),
