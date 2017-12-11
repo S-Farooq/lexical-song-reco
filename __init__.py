@@ -197,8 +197,6 @@ def callback():
             track_search_api_endpoint = "{}/search?q={}&type=track&market=US".format(SPOTIFY_API_URL,song_to_search)
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
-            print str(row['Artist']).upper(), str(row['My Song']).lower()
-            print search_data
             if len(search_data['tracks']['items'])==0:
                 continue
             
@@ -207,7 +205,8 @@ def callback():
                 artist_choices.append(t['artists'][0]['name'].upper())
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
-            print str(row['Artist']).upper(), str(row['My Song']).lower(), closest_artists
+            print str(row['Artist']).upper(), str(row['My Song']).lower()
+            print print ''.join(uri_list)
             # to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
@@ -222,7 +221,7 @@ def callback():
         except:
             continue
 
-    print ''.join(uri_list)
+    
     #ADD list of uris to playlist (add tracks)
     try:
         add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
