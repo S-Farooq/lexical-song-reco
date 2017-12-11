@@ -188,7 +188,8 @@ def callback():
                 closest_artist = closest_artists[0]
                 for t in search_data['tracks']['items']:
                     if t['artists'][0]['name'].upper()==closest_artist:
-                        uri_list.append(t['uri'])
+                        if t['uri'] not in uri_list:
+                            uri_list.append(t['uri'])
                         break
             # else:
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
@@ -204,7 +205,7 @@ def callback():
         post_request = requests.post(add_track_api_endpoint, data=json.dumps(track_data), headers=post_header)
         response_data = json.loads(post_request.text)
     except:
-        session['callback_playlist'] = post_request.text + str(track_data['uris'])
+        session['callback_playlist'] = post_request.text
         return redirect(url_for('.my_form'))       
     
 
