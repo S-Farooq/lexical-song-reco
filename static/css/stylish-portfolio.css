@@ -6,7 +6,7 @@
 
  #overlay {
     background: #e9e9e9;  <- I left your 'gray' background
-    /*display: none;        <- Not displayed by default*/
+    display: none;        <- Not displayed by default
     position: absolute;   <- This and the following properties will
     top: 0;                  make the overlay, the element will expand
     right: 0;                so as to cover the whole body of the page
