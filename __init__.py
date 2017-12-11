@@ -195,9 +195,12 @@ def callback():
         try:
             song_to_search=re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())
             song_to_search=re.sub(r'\s+', '+', song_to_search)
+            song_to_search=re.sub(r'\?|\&', '', song_to_search)
             track_search_api_endpoint = "{}/search?q={}&type=track&market=US".format(SPOTIFY_API_URL,song_to_search)
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
+            print str(row['Artist']).upper(), str(row['My Song']).lower()
+            print search_data
             if len(search_data['tracks']['items'])==0:
                 continue
             
@@ -206,7 +209,7 @@ def callback():
                 artist_choices.append(t['artists'][0]['name'].upper())
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
-
+            print str(row['Artist']).upper(), str(row['My Song']).lower(), closest_artists
             # to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
@@ -214,7 +217,7 @@ def callback():
                     if t['artists'][0]['name'].upper()==closest_artist:
                         if t['uri'] not in uri_list:
                             uri_list.append(t['uri'])
-                            print t['uri'], str(row['Artist']).upper(), artist_choices, str(row['My Song']).lower()
+                            
                         break
             # else:
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
