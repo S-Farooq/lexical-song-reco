@@ -229,26 +229,17 @@ def callback():
     # playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
     # playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
     # playlist_data = json.loads(playlists_response.text)
-    
     # Combine profile and playlist data to display
     # display_arr = [profile_data] + playlist_data["items"]
-    session['callback_playlist'] = Markup("<a href='{playlist_url}' target='_blank'><h3>Your New Lex-Recos Playlist</h3></a>".format(playlist_url=playlist_url))
+    # session['callback_playlist'] = Markup("<a href='{playlist_url}' target='_blank'><h3>Your New Lex-Recos Playlist</h3></a>".format(playlist_url=str(playlist_url)))
+    session['callback_playlist'] = str(playlist_url)
     # session['callback_playlist'] = Markup("".join(to_display))
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
     # uartist =session['uartist']
     # reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-
     return redirect(url_for('.my_form'))
-    # return redirect(url_for('.main', 
-    #         song_name=usong.upper(), artist_name=uartist.upper(),
-    #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore') + pprint.pformat(display_arr, indent=4)),  display="block"))
-
-    # return redirect('index.html',
-    #         song_name=usong.upper(), artist_name=uartist.upper(),
-    #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block")
-    # return render_template("index.html", reco_df=display_arr)
-
+    
 @app.route('/')
 def my_form():
     thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call_ea.txt', 'w')
