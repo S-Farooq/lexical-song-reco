@@ -196,6 +196,8 @@ def callback():
         except:
             continue
 
+    session['callback_playlist'] = "<p>Error with the uris:{}</p>".format(','.join(uri_list))
+    return redirect(url_for('.my_form')) 
     #ADD list of uris to playlist (add tracks)
     # try:
     add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
@@ -205,7 +207,7 @@ def callback():
     post_request = requests.post(add_track_api_endpoint, data=json.dumps(track_data), headers=post_header)
     response_data = json.loads(post_request.text)
     # except:
-    #     session['callback_playlist'] = "<p>Error with the uris:{}</p>".format(str(uri_list))
+    #     session['callback_playlist'] = "<p>Error with the uris:{}</p>".format(''.join(uri_list))
     #     return redirect(url_for('.my_form'))       
     
 
@@ -314,7 +316,7 @@ def main():
             
             
 
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
