@@ -319,10 +319,10 @@ def main():
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
             import random
-            r = lambda: random.randint(0,255)
+            r = lambda: random.randint(50,255)
             colors=[]
             for i in range(num_to_graph):
-                colors.append('%02X%02X%02X' % (r(),r(),r()))
+                colors.append('{}, {}, {}'.format(r(),r(),r()))
 
             colors.append('696969')
             session['user_song_values']=full_reco_df
@@ -383,10 +383,10 @@ def main():
             full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
             import random
-            r = lambda: random.randint(0,255)
+            r = lambda: random.randint(50,255)
             colors=[]
             for i in range(num_to_graph):
-                colors.append('%02X%02X%02X' % (r(),r(),r()))
+                colors.append('{}, {}, {}'.format(r(),r(),r()))
 
             colors.append('696969')
             session['user_song_values']=full_reco_df
