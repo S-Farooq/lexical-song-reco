@@ -194,7 +194,7 @@ def callback():
                 closest_artist = closest_artists[0]
                 for t in search_data['tracks']['items']:
                     if t['artists'][0]['name'].upper()==closest_artist:
-                        if t['uri'] not in uri_list:
+                        if t['uri'] and t['uri'] not in uri_list and not t['uri']='':
                             uri_list.append(t['uri'])
                             thefile.write(t['uri']+"\n")
                             print t['uri']
@@ -203,7 +203,7 @@ def callback():
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
             continue
-    thefile.write(''.join(uri_list))
+    thefile.write('\n'.join(uri_list))
     thefile.close()
     #ADD list of uris to playlist (add tracks)
     try:
