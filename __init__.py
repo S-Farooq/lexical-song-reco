@@ -11,35 +11,12 @@ sys.setdefaultencoding('utf-8')
 
 import json
 import base64
-import urllib, difflib, os, datetime
+import urllib, difflib
 
-class Logger(object):
-    def __init__(self, script_name):
-        now = datetime.datetime.now()
-        str_time = now.strftime("%m%d%Y_%HH%MM")
-        self.logname = "{script_name}_logfile_{currtime}.log".format(script_name=script_name, currtime=str_time)
-        self.terminal = sys.stdout
-        self.log = open(self.logname, "a")
-
-    def get_log_name(self):
-        return self.logname
-
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)  
-
-    def flush(self):
-        #this flush method is needed for python 3 compatibility.
-        #this handles the flush command by doing nothing.
-        #you might want to specify some extra behavior here.
-        pass
 
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response. 
 
-log_dir = "/var/www/FlaskApp/FlaskApp/logs"
-log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
-sys.stdout = log_inst
 
 app = Flask(__name__)
 app.secret_key = '5f535ebef7444444gb42d58590161e7bfcf653'
@@ -187,6 +164,7 @@ def callback():
     reco_df =pd.read_json(session['reco_df'], orient='split')
     to_display = []
     uri_list=[]
+    thefile = open('/var/www/FlaskApp/FlaskApp/log.txt', 'a')
     for index, row in reco_df.iterrows():
         if to_display_amount==0:
             break
@@ -207,6 +185,7 @@ def callback():
                 artist_choices.append(t['artists'][0]['name'].upper())
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
+            thefile.write(str(row['My Song']).lower()+"\n")
             print str(row['Artist']).upper(), str(row['My Song']).lower()
             
             # to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
@@ -216,6 +195,7 @@ def callback():
                     if t['artists'][0]['name'].upper()==closest_artist:
                         if t['uri'] not in uri_list:
                             uri_list.append(t['uri'])
+                            thefile.write(t['uri']+"\n")
                             print t['uri']
                         break
             # else:
@@ -223,7 +203,7 @@ def callback():
         except:
             continue
 
-    
+    thefile.close()
     #ADD list of uris to playlist (add tracks)
     try:
         add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
@@ -289,7 +269,7 @@ def my_form():
                     user_song_values=full_reco_df,features=x_names,colors=colors,
                     callback_playlist=callback_playlist)
         else:
-            
+
             return render_template('index.html', corpus_dict=corpus_dict)
     except:
         return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
