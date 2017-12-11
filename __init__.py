@@ -295,9 +295,7 @@ def my_form():
 
 @app.route('/', methods=['POST', 'GET'])
 def main():
-    log_dir = "/var/www/FlaskApp/FlaskApp/logs"
-    log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
-    sys.stdout = log_inst
+    
     if request.form['btn'] == 'search':
         try:
             session.clear()
@@ -435,6 +433,9 @@ def main():
             return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
 
     elif request.form['btn'] == 'playlist':
+        log_dir = "/var/www/FlaskApp/FlaskApp/logs"
+        log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
+        sys.stdout = log_inst
         return redirect(auth_spot())
     elif request.form['btn'] == 'more':
         reco_df =pd.read_json(session['reco_df'], orient='split')
