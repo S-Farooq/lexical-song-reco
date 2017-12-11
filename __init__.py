@@ -222,7 +222,7 @@ def callback():
         except:
             continue
 
-    
+    print ''.join(uri_list)
     #ADD list of uris to playlist (add tracks)
     try:
         add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
