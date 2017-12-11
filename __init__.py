@@ -205,7 +205,7 @@ def callback():
         post_request = requests.post(add_track_api_endpoint, data=json.dumps(track_data), headers=post_header)
         response_data = json.loads(post_request.text)
     except:
-        session['callback_playlist'] = post_request.text
+        session['callback_playlist'] = str(uri_list)
         return redirect(url_for('.my_form'))       
     
 
