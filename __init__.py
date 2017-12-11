@@ -37,7 +37,9 @@ class Logger(object):
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response. 
 
-
+log_dir = "/var/www/FlaskApp/FlaskApp/logs"
+log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
+sys.stdout = log_inst
 
 app = Flask(__name__)
 app.secret_key = '5f535ebef7444444gb42d58590161e7bfcf653'
@@ -287,9 +289,7 @@ def my_form():
                     user_song_values=full_reco_df,features=x_names,colors=colors,
                     callback_playlist=callback_playlist)
         else:
-            log_dir = "/var/www/FlaskApp/FlaskApp/logs"
-            log_inst = Logger(script_name="{log_dir}/LSR_".format(log_dir=log_dir))
-            sys.stdout = log_inst
+            
             return render_template('index.html', corpus_dict=corpus_dict)
     except:
         return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
