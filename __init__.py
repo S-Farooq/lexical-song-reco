@@ -251,6 +251,9 @@ def callback():
 
 @app.route('/')
 def my_form():
+    thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call_ea.txt', 'w')
+    thefile.write("made it to callbackear.")
+    thefile.close()
     try:
         if 'callback_playlist' in session:
             thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call.txt', 'w')
