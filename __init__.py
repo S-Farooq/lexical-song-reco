@@ -162,10 +162,10 @@ def callback():
     
     to_display_amount=10
     reco_df =pd.read_json(session['reco_df'], orient='split')
-    reco_df.to_csv("blah.csv")
+    reco_df.to_csv("/var/www/FlaskApp/FlaskApp/logs/blah.csv")
     to_display = []
     uri_list=[]
-    thefile = open('/var/www/FlaskApp/FlaskApp/logs.txt', 'w')
+    thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs.txt', 'w')
     for index, row in reco_df.iterrows():
         if to_display_amount==0:
             break
@@ -203,7 +203,7 @@ def callback():
             #     uri_list.append(search_data['tracks']['items'][0]['uri'])
         except:
             continue
-
+    thefile.write(''.join(uri_list))
     thefile.close()
     #ADD list of uris to playlist (add tracks)
     try:
