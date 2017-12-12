@@ -156,6 +156,8 @@ def callback():
         #playlist vars
         playlist_id = response_data['id']
         playlist_url = response_data['external_urls']['spotify']
+        session['callback_playlist'] = str(playlist_url)
+    
     except:
         session['callback_playlist'] = response_data
         return redirect(url_for('.my_form'))
@@ -232,7 +234,6 @@ def callback():
     # Combine profile and playlist data to display
     # display_arr = [profile_data] + playlist_data["items"]
     # session['callback_playlist'] = Markup("<a href='{playlist_url}' target='_blank'><h3>Your New Lex-Recos Playlist</h3></a>".format(playlist_url=str(playlist_url)))
-    session['callback_playlist'] = str(playlist_url)
     # session['callback_playlist'] = Markup("".join(to_display))
     # reco_df =pd.read_json(session['reco_df'], orient='split')
     # usong =session['usong']
