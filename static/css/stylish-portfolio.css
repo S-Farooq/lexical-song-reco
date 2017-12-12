@@ -5,12 +5,12 @@
  */
 
 @media screen 
-and (min-width : 450px) {
+and (min-width : 420px) {
   #radar-chart {
     display: block !important;
   }
 
-  #chart-msg {
+  .chart-msg {
     display: none !important;
   }
 
@@ -24,7 +24,7 @@ and (max-width : 420px) {
     display: none !important;
   }
 
-  #chart-msg {
+  .chart-msg {
     display: block !important;
   }
 
