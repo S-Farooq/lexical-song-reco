@@ -254,7 +254,7 @@ def get_render_vars(callback=False):
     dummy_var, x_names = get_song_data(tokenized_song)
 
     full_reco_df =pd.read_json(session['user_song_values'], orient='split')
-    full_reco_df=full_reco_df.values.to_list()
+    full_reco_df=full_reco_df.values.tolist()
     import random
     r = lambda: random.randint(50,255)
     colors=[]
