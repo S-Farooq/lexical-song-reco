@@ -3,10 +3,9 @@
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/blob/master/LICENSE)
  */
-
+/*
 @media only screen 
 and (min-width : 350px) {
-  /* Styles */
   #radar-chart {
     display: block;
   }
@@ -19,10 +18,8 @@ and (min-width : 350px) {
     display: block;
   }
 }
-/* Smartphones (portrait) ----------- */
 @media only screen 
 and (max-width : 350px) {
-  /* Styles */
   #radar-chart {
     display: none;
   }
@@ -34,7 +31,7 @@ and (max-width : 350px) {
   #myChart {
     display: none;
   }
-}
+}*/
 
  #overlay {
     background: #e9e9e9;  <- I left your 'gray' background
