@@ -239,58 +239,76 @@ def callback():
     # usong =session['usong']
     # uartist =session['uartist']
     # reco_display = get_mrkup_from_df(reco_df,to_display_amount=2)
-    return redirect(url_for('.my_form'))
-    
+    return redirect(url_for('.my_form_results'))
+
+@app.route('/results')
+def my_form_results():
+    reco_df =pd.read_json(session['reco_df'], orient='split')
+    usong =session['usong']
+    uartist =session['uartist']
+    full_reco_df=session['user_song_values']
+    x_names=session['features']
+    colors=session['colors']
+    reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
+    to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
+    callback_playlist=session['callback_playlist']
+    return render_template('index.html', scroll="recos",
+        song_name=usong.upper(), artist_name=uartist.upper(),
+        reco_df=to_show_reco,  display="block", corpus_dict=corpus_dict,
+        user_song_values=full_reco_df,features=x_names,colors=colors,
+        callback_playlist=callback_playlist)
+
 @app.route('/')
 def my_form():
-    thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call_ea.txt', 'w')
-    thefile.write("made it to callbackear.")
-    if 'callback_playlist' in session:
-        thefile.write(session['usong'])
-    thefile.close()
-    try:
-        if 'callback_playlist' in session:
-            thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call.txt', 'w')
-            thefile.write("made it to callback.")
-            thefile.close()
-            reco_df =pd.read_json(session['reco_df'], orient='split')
-            usong =session['usong']
-            uartist =session['uartist']
-            full_reco_df=session['user_song_values']
-            x_names=session['features']
-            colors=session['colors']
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
-            to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
-            callback_playlist=session['callback_playlist']
-            session.clear()
-            if 'callback_playlist' in session:
-                return render_template('index.html', scroll="recos",
-                    song_name=usong.upper(), artist_name=uartist.upper(),
-                    reco_df=to_show_reco,  display="block",corpus_dict=corpus_dict,
-                    user_song_values=full_reco_df,features=x_names,colors=colors,
-                    callback_playlist=callback_playlist
-                    )
-            else:
-                return render_template('index.html', scroll="recos",
-                    song_name=usong.upper(), artist_name=uartist.upper(),
-                    reco_df=to_show_reco,  display="block", corpus_dict=corpus_dict,
-                    user_song_values=full_reco_df,features=x_names,colors=colors,
-                    callback_playlist=callback_playlist)
-        else:
+    # thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call_ea.txt', 'w')
+    # thefile.write("made it to callbackear.")
+    # if 'callback_playlist' in session:
+    #     thefile.write(session['usong'])
+    # thefile.close()
+    # try:
+    #     if 'callback_playlist' in session:
+    #         thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs_call.txt', 'w')
+    #         thefile.write("made it to callback.")
+    #         thefile.close()
+    #         reco_df =pd.read_json(session['reco_df'], orient='split')
+    #         usong =session['usong']
+    #         uartist =session['uartist']
+    #         full_reco_df=session['user_song_values']
+    #         x_names=session['features']
+    #         colors=session['colors']
+    #         reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
+    #         to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
+    #         callback_playlist=session['callback_playlist']
+    #         session.clear()
+    #         if 'callback_playlist' in session:
+    #             return render_template('index.html', scroll="recos",
+    #                 song_name=usong.upper(), artist_name=uartist.upper(),
+    #                 reco_df=to_show_reco,  display="block",corpus_dict=corpus_dict,
+    #                 user_song_values=full_reco_df,features=x_names,colors=colors,
+    #                 callback_playlist=callback_playlist
+    #                 )
+    #         else:
+    #             return render_template('index.html', scroll="recos",
+    #                 song_name=usong.upper(), artist_name=uartist.upper(),
+    #                 reco_df=to_show_reco,  display="block", corpus_dict=corpus_dict,
+    #                 user_song_values=full_reco_df,features=x_names,colors=colors,
+    #                 callback_playlist=callback_playlist)
+    #     else:
 
-            return render_template('index.html', corpus_dict=corpus_dict)
-    except:
-        return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
-                    err_msg="Error loading this page...")
+    #         return render_template('index.html', corpus_dict=corpus_dict)
+    # except:
+    #     return render_template('index.html', display_alert="block", corpus_dict=corpus_dict,
+    #                 err_msg="Error loading this page...")
+    session.clear() 
+    return render_template('index.html', corpus_dict=corpus_dict)
 
-
+@app.route('/results', methods=['POST', 'GET'])
 @app.route('/', methods=['POST', 'GET'])
 def main():
     
     if request.form['btn'] == 'search':
         try:
-            session.clear()
-            
+            session.clear()            
             dbase = request.form['dbase']
             csv_file = corpus_dict[dbase]
             ds = "/var/www/FlaskApp/FlaskApp/{csv_file}.csv".format(csv_file=csv_file)
