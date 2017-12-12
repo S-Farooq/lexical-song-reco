@@ -4,16 +4,24 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/blob/master/LICENSE)
  */
 
+ .chart-msg {
+  display: none;
+}
+
 @media only screen 
 and (min-device-width : 320px) 
-and (max-device-width : 480px) {
+and (max-device-width : 420px) {
 /* Styles */
 #radar-chart {
-  height: 200px !important;
+  display: none;
+}
+
+#chart-msg {
+  display: block;
 }
 
 #myChart {
-  height: 200px !important;
+  display: none;
 }
 }
 
