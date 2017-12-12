@@ -163,12 +163,11 @@ def callback():
         return redirect(url_for('.my_form'))
     
 
-    to_display_amount=25
+    
     reco_df =pd.read_json(session['reco_df'], orient='split')
-    reco_df.to_csv("/var/www/FlaskApp/FlaskApp/logs/blah.csv")
+    to_display_amount=len(reco_df.index)
     to_display = []
     uri_list=[]
-    thefile = open('/var/www/FlaskApp/FlaskApp/logs/logs.txt', 'w')
     for index, row in reco_df.iterrows():
         if to_display_amount==0:
             break
@@ -178,7 +177,7 @@ def callback():
             song_to_search=re.sub(r'[^a-zA-Z0-9\s]', '', str(row['My Song']).lower())
             song_to_search=re.sub(r'\s+', '+', song_to_search)
             song_to_search=re.sub(r'\?|\&', '', song_to_search)
-            track_search_api_endpoint = "{}/search?q={}&type=track&market=US".format(SPOTIFY_API_URL,song_to_search)
+            track_search_api_endpoint = "{}/search?q={}&type=track&market=US&limit=50".format(SPOTIFY_API_URL,song_to_search)
             search_response = requests.get(track_search_api_endpoint, headers=authorization_header)
             search_data = json.loads(search_response.text)
             if len(search_data['tracks']['items'])==0:
@@ -189,10 +188,8 @@ def callback():
                 artist_choices.append(t['artists'][0]['name'].upper())
             
             closest_artists = difflib.get_close_matches(str(row['Artist']).upper(), artist_choices,1)
-            thefile.write(str(row['My Song']).lower()+"\n")
             print str(row['Artist']).upper(), str(row['My Song']).lower()
             
-            # to_display.append("<p>"+str(row['Artist']).upper() + "-"+str(artist_choices)+"<br></p>")
             if len(closest_artists)>0:
                 closest_artist = closest_artists[0]
                 for t in search_data['tracks']['items']:
@@ -200,17 +197,11 @@ def callback():
                     if t['artists'][0]['name'].upper()==closest_artist:
                         if uri not in uri_list:
                             uri_list.append(t['uri'])
-                            thefile.write(t['uri']+"\n")
                             print t['uri']
                         break
-                    thefile.write("not found..something wrong\n")
-            else:
-                thefile.write("no close artist....\n")
-            # else:
-            #     uri_list.append(search_data['tracks']['items'][0]['uri'])
+            
         except:
             continue
-    thefile.write('\n'.join(uri_list))
     #ADD list of uris to playlist (add tracks)
     try:
         add_track_api_endpoint = "{}/playlists/{}/tracks".format(profile_data["href"],playlist_id)
@@ -224,9 +215,6 @@ def callback():
         return redirect(url_for('.my_form'))       
     
     print "AFTER ADDING TRACKS.."
-    thefile.write("made it after adding tracks\n")
-    thefile.write(str(playlist_url)+" - the url\n")
-    thefile.close()
     # Get user playlist data
     # playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
     # playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
@@ -242,7 +230,7 @@ def callback():
     return redirect(url_for('.my_form'))
 
 
-def get_render_vars(callback=False):
+def get_render_vars():
     reco_df =pd.read_json(session['reco_df'], orient='split')
     usong =session['usong']
     uartist =session['uartist']
@@ -264,7 +252,7 @@ def get_render_vars(callback=False):
     colors.append('{}, {}, {}'.format(105,105,105))
     x_names = get_feature_names(x_names)
 
-    if callback:
+    if 'callback_playlist' in session:
         callback_playlist=session['callback_playlist']
         return render_template('index.html', scroll="recos",
             song_name=usong.upper(), artist_name=uartist.upper(),
@@ -280,9 +268,7 @@ def get_render_vars(callback=False):
 @app.route('/')
 def my_form():
     try:
-        if 'callback_playlist' in session:
-            return get_render_vars(callback=True)
-        elif 'reco_df' in session:
+        if 'reco_df' in session:
             return get_render_vars()
         else:
             return render_template('index.html', corpus_dict=corpus_dict)
@@ -292,7 +278,6 @@ def my_form():
 
 @app.route('/', methods=['POST', 'GET'])
 def main():
-    
     if request.form['btn'] == 'search':
         try:
             session.clear()
@@ -338,23 +323,13 @@ def main():
             
             
 
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=15)
+            
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
             full_reco_df = full_reco_df[["My Songs"] +x_names]
             full_reco_df.loc[len(full_reco_df.index)] = [usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist()
             session['user_song_values']=full_reco_df.to_json(orient='split')
-            # full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
-            # full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
-            # import random
-            # r = lambda: random.randint(50,255)
-            # colors=[]
-            # for i in range(num_to_graph):
-            #     colors.append('{}, {}, {}'.format(r(),r(),r()))
-
-            # colors.append('{}, {}, {}'.format(105,105,105))
-            
-
             
             return get_render_vars()
         except Exception as e:
@@ -396,49 +371,34 @@ def main():
             X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.0)
             user_scaled_data= scaler.transform(user_data)
             
-            reco_df, full_reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,x_names,n_top=25)
+            reco_df, full_reco_df = get_euc_dist(user_scaled_data,X_train,[user_song_name],y_train,x_names,n_top=15)
 
             session['reco_df']=reco_df.to_json(orient='split')
             
             
-            reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
+            reco_display = get_mrkup_from_df(reco_df,to_display_amount=15)
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
-            full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
-            full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
-            import random
-            r = lambda: random.randint(50,255)
-            colors=[]
-            for i in range(num_to_graph):
-                colors.append('{}, {}, {}'.format(r(),r(),r()))
-
-            colors.append('{}, {}, {}'.format(105,105,105))
-
-            # colors.append('696969')
-            session['user_song_values']=full_reco_df
-            session['features']=get_feature_names(x_names)
-            session['colors']=colors
-
-            # user_scaled_data = user_scaled_data[0,:].tolist()
-            return render_template('index.html', scroll="recos", 
-                song_name=usong.upper(), artist_name=uartist.upper(),
-                reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict,
-                user_song_values=full_reco_df,features=session['features'],colors=colors)
+            full_reco_df = full_reco_df[["My Songs"] +x_names]
+            full_reco_df.loc[len(full_reco_df.index)] = [usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist()
+            session['user_song_values']=full_reco_df.to_json(orient='split')
+            
+            return get_render_vars()
         except Exception as e:
             err_msg = str(e) + "ERROR: Sorry, looks like something has gone wrong... shoot me a message and I'll try to fix it!"
             return render_template('index.html', display_alert="block", err_msg=err_msg,corpus_dict=corpus_dict)
 
     elif request.form['btn'] == 'playlist':
         return redirect(auth_spot())
-    elif request.form['btn'] == 'more':
-        reco_df =pd.read_json(session['reco_df'], orient='split')
-        usong =session['usong']
-        uartist =session['uartist']
-        reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
+    # elif request.form['btn'] == 'more':
+    #     reco_df =pd.read_json(session['reco_df'], orient='split')
+    #     usong =session['usong']
+    #     uartist =session['uartist']
+    #     reco_display = get_mrkup_from_df(reco_df,to_display_amount=25)
 
-        return render_template('index.html',
-            song_name=usong.upper(), artist_name=uartist.upper(),
-            reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict)
+    #     return render_template('index.html',
+    #         song_name=usong.upper(), artist_name=uartist.upper(),
+    #         reco_df=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')),  display="block",corpus_dict=corpus_dict)
     else:
         return render_template("index.html",corpus_dict=corpus_dict)
 
