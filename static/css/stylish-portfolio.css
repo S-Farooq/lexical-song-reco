@@ -4,25 +4,36 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/blob/master/LICENSE)
  */
 
- .chart-msg {
-  display: none;
-}
-
 @media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 420px) {
-/* Styles */
-#radar-chart {
-  display: none;
-}
+and (min-width : 350px) {
+  /* Styles */
+  #radar-chart {
+    display: block;
+  }
 
-#chart-msg {
-  display: block;
-}
+  #chart-msg {
+    display: none;
+  }
 
-#myChart {
-  display: none;
+  #myChart {
+    display: block;
+  }
 }
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 350px) {
+  /* Styles */
+  #radar-chart {
+    display: none;
+  }
+
+  #chart-msg {
+    display: block;
+  }
+
+  #myChart {
+    display: none;
+  }
 }
 
  #overlay {
