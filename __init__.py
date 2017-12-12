@@ -157,6 +157,7 @@ def callback():
         playlist_id = response_data['id']
         playlist_url = response_data['external_urls']['spotify']
         session['callback_playlist'] = str(playlist_url)
+        session.modified = True
     
     except:
         session['callback_playlist'] = response_data
