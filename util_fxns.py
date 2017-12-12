@@ -486,7 +486,10 @@ if __name__ == '__main__':
         all_data = pd.read_csv(ds, encoding="utf-8")
 
         test_lyric = "Test text to get the x_names field lol what ever"
+        test_lyric = search_musix_track("you stopped making sense the radio dept")
+        print test_lyric
         tokenized_song = tokenize_song(test_lyric)
+        print tokenized_song
         dummy_var, x_names = get_song_data(tokenized_song)
 
         X_train, X_test, y_train, y_test, scaler= get_normalized_and_split_data(all_data, x_names,split=0.3)
