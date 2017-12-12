@@ -246,10 +246,12 @@ def get_render_vars(callback=False):
     reco_df =pd.read_json(session['reco_df'], orient='split')
     usong =session['usong']
     uartist =session['uartist']
-    x_names=session['features']
     reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
     to_show_reco=Markup(str(reco_display).encode(encoding='UTF-8',errors='ignore')) 
     
+    test_lyric = "Test text to get the x_names field lol what ever"
+    tokenized_song = tokenize_song(test_lyric)
+    dummy_var, x_names = get_song_data(tokenized_song)
 
     full_reco_df =pd.read_json(session['user_song_values'], orient='split')
     full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
@@ -261,6 +263,8 @@ def get_render_vars(callback=False):
         colors.append('{}, {}, {}'.format(r(),r(),r()))
 
     colors.append('{}, {}, {}'.format(105,105,105))
+    x_names = get_feature_names(x_names)
+    
     if callback:
         callback_playlist=session['callback_playlist']
         return render_template('index.html', scroll="recos",
@@ -339,7 +343,6 @@ def main():
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
             session['user_song_values']=full_reco_df.to_json(orient='split')
-            session['features']=get_feature_names(x_names)
             # full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             # full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
             # import random
