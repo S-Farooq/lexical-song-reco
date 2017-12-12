@@ -276,13 +276,16 @@ def get_render_vars(callback=False):
 
 @app.route('/')
 def my_form():
-    if 'callback_playlist' in session:
-        return get_render_vars(callback=True)
-    elif 'reco_df' in session:
-        return get_render_vars()
-    else:
+    try:
+        if 'callback_playlist' in session:
+            return get_render_vars(callback=True)
+        elif 'reco_df' in session:
+            return get_render_vars()
+        else:
+            return render_template('index.html', corpus_dict=corpus_dict)
+    except:
+        session.clear()
         return render_template('index.html', corpus_dict=corpus_dict)
-
 
 @app.route('/', methods=['POST', 'GET'])
 def main():
