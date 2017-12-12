@@ -254,8 +254,7 @@ def get_render_vars(callback=False):
     dummy_var, x_names = get_song_data(tokenized_song)
 
     full_reco_df =pd.read_json(session['user_song_values'], orient='split')
-    full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
-    full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
+    full_reco_df=full_reco_df.values.to_list()
     import random
     r = lambda: random.randint(50,255)
     colors=[]
@@ -264,7 +263,7 @@ def get_render_vars(callback=False):
 
     colors.append('{}, {}, {}'.format(105,105,105))
     x_names = get_feature_names(x_names)
-    
+
     if callback:
         callback_playlist=session['callback_playlist']
         return render_template('index.html', scroll="recos",
@@ -342,6 +341,8 @@ def main():
             reco_display = get_mrkup_from_df(reco_df,to_display_amount=7)
             num_to_graph=7
             full_reco_df = full_reco_df.head(num_to_graph)
+            full_reco_df = full_reco_df[["My Songs"] +x_names]
+            full_reco_df.loc[len(full_reco_df.index)] = [usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist()
             session['user_song_values']=full_reco_df.to_json(orient='split')
             # full_reco_df = full_reco_df[["My Songs"] +x_names].values.tolist()
             # full_reco_df.append([usong.upper()+"-"+uartist.upper()]+user_scaled_data[0,:].tolist())
