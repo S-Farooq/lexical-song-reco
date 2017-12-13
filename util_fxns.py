@@ -470,20 +470,26 @@ if __name__ == '__main__':
     if len(sys.argv)>1 and sys.argv[1]=='dataonly':
         data_only = True
 
-    tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_moresongs.p"
-    lc='/var/www/FlaskApp/FlaskApp/lyric_moresongs.p'
-    ds = "/var/www/FlaskApp/FlaskApp/dataframe_storage_moresongs.csv"
-    artists = ["the national", "Editors", "chvrches", "william fitzsimmons", "vienna teng",
-        "oh wonder",'the shins','the killers','the strokes','bleachers',
-        "alvvays","andrew bird","birdy","bon iver","kings of leon", "the radio dept", "florence + the machine", "dawud wharnsby",
-        "julien baker","yeah yeah yeahs", "angus and julia stone", "catfish and the bottlemen", "clap your hands say yeah"]
+    suffix = sys.argv[2]
+    pgs = int(sys.argv[3])
+    tlc ="/var/www/FlaskApp/FlaskApp/tokenized_lyric_{suffix}.p".format(suffix=suffix)
+    lc='/var/www/FlaskApp/FlaskApp/lyric_{suffix}.p'.format(suffix=suffix)
+    ds = "/var/www/FlaskApp/FlaskApp/df_{suffix}.csv".format(suffix=suffix)
+    artists = ["julia jacklin", "mitski", "margaret glaspy", "big thief", "city calm down",
+    "alvvays", "EL VY", "Heartless Bastards", "Julien Baker", "St. Vincent", "real estate",
+    "sufjan stevens", "conor oberst", "monsters of folk", "William Fitzsimmons", "iron & wine",
+    "daughter", "lord huron", "andrew bird", "volcano choir", "the head and the heart", "bon iver",
+    "sufjan stevens", "london grammar", "wolf alice", "HAIM", "regina spektor", 
+    "oh wonder", "the japanese house", "broods", "seafret"]
+
+    artists = set(artists)
     
     if not data_only:
-        lyric_corpus = search_musix_corpus(artists,pages=4,corpus_file=lc)
+        lyric_corpus = search_musix_corpus(artists,pages=pgs,corpus_file=lc)
         tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
         all_data = get_corpus_dataframe(tlc, output_file=ds)
     else:
-        ds = "/var/www/FlaskApp/FlaskApp/dataframe_storagewpop2.csv"
+        ds = "/var/www/FlaskApp/FlaskApp/df_{suffix}.csv".format(suffix=suffix)
         all_data = pd.read_csv(ds, encoding="utf-8")
 
         test_lyric = "Test text to get the x_names field lol what ever"
