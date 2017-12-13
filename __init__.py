@@ -53,7 +53,8 @@ auth_query_parameters = {
 
 corpus_dict = {
         'Top songs (random artists)': "df_random_artists_top",
-        'All songs (random artists)': "df_random_artists_all"
+        'All songs (random artists)': "df_random_artists_all",
+        'Indie Artists Mix 1'  : "df_indie_top",
     }
 
 def get_feature_names(x_names):
