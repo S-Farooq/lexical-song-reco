@@ -483,7 +483,6 @@ if __name__ == '__main__':
     "oh wonder", "the japanese house", "broods", "seafret"]
 
     artists = set(artists)
-    
     if not data_only:
         lyric_corpus = search_musix_corpus(artists,pages=pgs,corpus_file=lc)
         tokenized_lyric_corpus = tokenize_corpus(lc, tokenized_corpus_file=tlc)
