@@ -19,7 +19,7 @@ import urllib, difflib
 
 
 app = Flask(__name__)
-with open('config.json') as json_data_file:
+with open('/var/www/FlaskApp/FlaskApp/config.json') as json_data_file:
     data = json.load(json_data_file)
 app.secret_key = data['secret_key']
 #  Client Keys
