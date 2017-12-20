@@ -19,10 +19,12 @@ import urllib, difflib
 
 
 app = Flask(__name__)
-app.secret_key = '5f535ebef7444444gb42d58590161e7bfcf653'
+with open('config.json') as json_data_file:
+    data = json.load(json_data_file)
+app.secret_key = data['secret_key']
 #  Client Keys
-CLIENT_ID = "5f535ebef74b42d58590161e7bfcf653"
-CLIENT_SECRET = "b9f8b9f7c055433894bdcef35a2905f0"
+CLIENT_ID = data['client_id']
+CLIENT_SECRET = data['client_secret']
 
 # Spotify URLS
 SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize"
