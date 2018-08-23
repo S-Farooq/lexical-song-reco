@@ -1,5 +1,8 @@
 "# lexical-song-reco" 
 
+This is support code for a medium article publication:
+<a href="https://medium.com/@shahamfarooq/lexical-song-recommendation-813d663fa059">Lexical Song Recommendation</a>
+
 I tried a couple of models and techniques but settled on something quite basic: Euclidean Distance calculations. The idea is to generate feature vectors of lexical data from the lyrics of the user’s song and songs from the select playlist. Then, I calculate the euclidean distance between the 2 sets (the users vs. selected playlist) and present the closest distances to the user.
 
 # Analytical Features (Python, NLTK, Scikit-learn, Web-scraping)
